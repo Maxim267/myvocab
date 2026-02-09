@@ -1,0 +1,27 @@
+[project]
+name = "myvocab"
+version = "0.1.0"
+description = "Building a vocabulary by scanning .txt files starting from the root directory."
+readme = "README.md"
+requires-python = ">=3.12, <3.15"
+dependencies = [
+    "dotenv",
+    "requests",
+]
+
+[dependency-groups]
+jwt = [
+    "yandexcloud",
+]
+build_exe = [
+    "PyInstaller==6.18.0"
+]
+
+[tool.poetry.group.jwt]
+optional = true
+
+[tool.poetry.group.build_exe]
+optional = true
+
+[tool.poetry.group.jwt.dependencies]
+python = ">=3.12, <=3.13"
