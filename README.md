@@ -4,11 +4,11 @@
 
 Any text outside the `<<word>>` and `<</word>>` tag-only strings is treated as raw file lines. 
 Text enclosed in `<<word>>` and `<</word>>` tag-only strings is interpreted as a list of isolated English words, 
-which can optionally be converted to their singular or infinitive forms and translated.
+which can optionally be converted to their singular or infinitive forms and translated into Russian.
 Set options in the auto-generated base_directory/Myvocab_58b254sv/settings.txt.
 This directory contains all program output data.
 
-
+Please refer to the `tests/instructions` for instructions in Russian.
 
 ## Installing tools
 
@@ -61,11 +61,15 @@ To start the program, run the script:
 
     python myvocab.py
 
-Use the `-D` flag to write debug logs to `app.log:
+Use the `-D` flag to write debug logs to `app.log`:
 
     python myvocab.py -D
 
-## Building myvocab.exe
+Use the path argument to define the base directory for parsing:
+
+    python myvocab.py C:\full\path\to\base_directory
+
+## Building and executing `myvocab.exe`
 
 Install missing packages (remove unneeded ones):
 
@@ -78,6 +82,12 @@ Build `myvocab.exe` using `myvocab.spec`:
 The last log line shows the `myvocab.exe` output path:
 
     INFO: Build complete! The results are available in: C:\full\path\to\myvocab\dist
+
+To launch the program, double-click the executable or run the scripts:
+
+    myvocab.exe
+    myvocab.exe -D
+    myvocab.exe C:\full\path\to\base_directory
 
 ## Changing authentication and installing packages
 
