@@ -12,7 +12,7 @@ from src.myvocab.utils.input_handler.input_yes_no import get_yes_no_input
 # Root logger
 logger = logging.getLogger(__name__)
 
-def main(root_directory: Path, level: str):
+def main(base_directory: Path, level: str):
 
     print(f"Python {platform.python_version()}")
     print(f"{sys.argv[0]}")
@@ -23,20 +23,20 @@ def main(root_directory: Path, level: str):
     dotenv_path = resource_path(Path('.env'))
     load_dotenv(dotenv_path=dotenv_path)
 
-    if root_directory == "":
-        root_directory = Path.cwd()
-    print(f"The root directory for parsing text files: {str(root_directory.resolve())}")
+    if base_directory == "":
+        base_directory = Path.cwd()
+    print(f"The base directory for parsing text files: {str(base_directory.resolve())}")
 
     continue_program = get_yes_no_input("Do you want to continue?", default="yes")
 
     if continue_program:
-        prc.render_vocab(root_directory)
+        prc.render_vocab(base_directory)
         input("Press Enter to exit...")
     else:
         continue_program = get_yes_no_input("Do you want to enter a new directory for parsing text files?", default="yes")
         if continue_program:
-            root_directory = Path(input("New root directory for parsing text files: "))
-            prc.render_vocab(root_directory)
+            base_directory = Path(input("New base directory for parsing text files: "))
+            prc.render_vocab(base_directory)
             input("Press Enter to exit...")
 
 if __name__ == '__main__':

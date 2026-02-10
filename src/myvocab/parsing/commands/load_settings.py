@@ -67,8 +67,8 @@ def load_settings(vocab: vcb.VocabConfig) -> None:
                     vld.validate_bool_value(cns.BOOLEAN_STRINGS, word[1].strip())
                     vocab.use_folder_with_leading_exclamation_mark = (word[1].strip().lower() in cns.TRUTH_STRINGS)
                     try:
-                        message = "The root directory has the leading exclamation mark, but the 'use_folder_with_leading_exclamation_mark' option is set to false:"
-                        vld.validate_directory_with_leading_exclamation_mark(vocab.root_directory.name, vocab.use_folder_with_leading_exclamation_mark, message)
+                        message = "The base directory has the leading exclamation mark, but the 'use_folder_with_leading_exclamation_mark' option is set to false:"
+                        vld.validate_directory_with_leading_exclamation_mark(vocab.base_directory.name, vocab.use_folder_with_leading_exclamation_mark, message)
                     except Exception as e:
                         logger.warning(f"Warning: {e}")
                 except Exception as e:

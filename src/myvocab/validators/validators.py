@@ -3,21 +3,21 @@ import re
 import os
 from src.myvocab.exceptions import exceptions as exc
 
-def validate_root_directory(root_path: Path):
-    """ Validate root directory. """
+def validate_base_directory(base_path: Path):
+    """ Validate base directory. """
 
-    if root_path.is_file():
-        raise exc.DirectoryIsNotFolderError(root_path.resolve())
+    if base_path.is_file():
+        raise exc.DirectoryIsNotFolderError(base_path.resolve())
 
-    if not root_path.exists():
-        raise exc.DirectoryNotExistError(root_path.resolve())
+    if not base_path.exists():
+        raise exc.DirectoryNotExistError(base_path.resolve())
 
-    if root_path.is_mount():
-        raise exc.DirectoryIsMountError(root_path.resolve())
+    if base_path.is_mount():
+        raise exc.DirectoryIsMountError(base_path.resolve())
 
     if sys_dir := os.environ.get('SystemRoot'):
-        if root_path.is_relative_to(sys_dir):
-            raise exc.DirectoryIsSystemRootError(root_path.resolve())
+        if base_path.is_relative_to(sys_dir):
+            raise exc.DirectoryIsSystemRootError(base_path.resolve())
 
 def validate_file_name(reference_directory: Path, validate_filename: str):
     """ Validate filename. """

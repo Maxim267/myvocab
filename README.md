@@ -1,11 +1,11 @@
 # myvocab (Python)
 
-**Building a vocabulary by scanning .txt files starting from the root directory.**
+**Building a vocabulary by scanning .txt files starting from the base directory.**
 
 Any text outside the `<<word>>` and `<</word>>` tag-only strings is treated as raw file lines. 
 Text enclosed in `<<word>>` and `<</word>>` tag-only strings is interpreted as a list of isolated English words, 
 which can optionally be converted to their singular or infinitive forms and translated.
-Set options in the auto-generated /root_directory/Myvocab_58b254sv/settings.txt.
+Set options in the auto-generated base_directory/Myvocab_58b254sv/settings.txt.
 This directory contains all program output data.
 
 

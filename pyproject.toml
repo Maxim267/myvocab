@@ -1,7 +1,7 @@
 [project]
 name = "myvocab"
 version = "0.1.0"
-description = "Building a vocabulary by scanning .txt files starting from the root directory."
+description = "Building a vocabulary by scanning .txt files starting from the base directory."
 readme = "README.md"
 requires-python = ">=3.12, <3.15"
 dependencies = [

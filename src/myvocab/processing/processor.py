@@ -55,33 +55,18 @@ def set_transformer (word: str, vocab: vcb.VocabConfig) -> dict:
 
    return vdata
 
-# def skip_current_dir(vocab: vcb.VocabConfig, dir_path: Path, dirpath_parts: Path) -> bool:
-#    """ Check if the current directory should be ignored. """
-#    try:
-#       # Ignore current directory prefixed with '!' if 'use_folder_with_leading_exclamation_mark' flag is unset
-#       vld.validate_directory_with_leading_exclamation_mark(dirpath_parts, vocab.use_folder_with_leading_exclamation_mark)
-#    except exc.VocabError:
-#       return True
-#
-#    # Exclude the resulting directory from parsing
-#    if (dir_path.is_relative_to(vocab.result_file.parent)
-#            or re.findall(rf'{vocab.result_file.parent.name}', str(dirpath_parts))):
-#       return True
-#
-#    return False
-
-def render_vocab(root_path: Path):
-   """ Generate a vocabulary from the root directory.
+def render_vocab(base_path: Path):
+   """ Generate a vocabulary from the base directory.
 
    Any text outside the <<word>> and <</word>> tag-only strings is treated as raw file lines.
    Text enclosed in <<word>> and <</word>> tag-only strings is interpreted as a list of isolated English words,
    which can optionally be converted to their singular or infinitive forms and translated.
-   Set options in the auto-generated /root_directory/base_unique_id/settings.txt.
+   Set options in the auto-generated base_directory/dir_unique_id/settings.txt.
    This directory contains all program output data.
    """
 
    # Create a new empty vocabulary
-   vocab = vcb.VocabConfig(root_path)
+   vocab = vcb.VocabConfig(base_path)
    # Load settings from an existing file, otherwise persist defaults
    load_settings(vocab)
 
@@ -128,17 +113,17 @@ def render_vocab(root_path: Path):
       trn_tag = cns.TAG_TRANSLATE
 
    logger.info("Populating a new vocabulary with isolated words and phrases ...")
-   offset = len(vocab.root_directory.parts) - 1
+   offset = len(vocab.base_directory.parts) - 1
 
    # Show the `activity indicator`
    print(f"Parsing files: ", end="", flush=True)
 
    flag_next_file = False
 
-   # Path.walk traverses the directory tree, starting from the root
-   for dirpath, dirs, files in Path.walk(vocab.root_directory, on_error = handle_error):
+   # Path.walk traverses the directory tree, starting from the base
+   for dirpath, dirs, files in Path.walk(vocab.base_directory, on_error = handle_error):
 
-      # The path is starting from the root directory.
+      # The path is starting from the base directory.
       dirpath_parts = Path(*dirpath.parts[offset::])
 
       # Check if the current directory should be ignored

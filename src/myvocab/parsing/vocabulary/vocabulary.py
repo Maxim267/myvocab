@@ -8,30 +8,30 @@ class VocabConfig:
     """ Vocabulary configuration
 
     The Vocabulary configuration is a structure designed to automatically generate and store
-    a set of attributes used for parsing text files, starting at the root directory.
+    a set of attributes used for parsing text files, starting at the base directory.
     """
 
     __singular: sng.SingularAttrib = None
     __infinit: inf.InfinitAttrib = None
     __verbs_ending_s = set()
 
-    def __init__(self, root_path: Path):
+    def __init__(self, base_path: Path):
         """ Initialize the `Vocabulary configuration`.
         Args:
-            root_path (Path): Root directory.
+            base_path (Path): Base directory.
         """
         try:
-            vld.validate_root_directory(root_path)
-            self.__root_directory = root_path
+            vld.validate_base_directory(base_path)
+            self.__base_directory = base_path
             set_file_handler(self.log_file)
         except Exception:
             current_directory = Path.cwd()
             set_file_handler(Path.joinpath(current_directory, self.__LOG_FILE_NAME))
             raise
 
-    __BASE_NAME: str = "Myvocab"
+    __DIR_NAME: str = "Myvocab"
     __UNIQUE_ID: str = "58b254sv"
-    __BASE_UNIQUE_ID: str = f"{__BASE_NAME}_{__UNIQUE_ID}"
+    __DIR_UNIQUE_ID: str = f"{__DIR_NAME}_{__UNIQUE_ID}"
     __SETTINGS_FILE_NAME: str = "settings.txt"
     __ALL_PATCHES_FILE_NAME: str = "view_all_used_paths.txt"
     __LOG_FILE_NAME: str = "app.log"
@@ -51,19 +51,19 @@ class VocabConfig:
     use_folder_with_leading_exclamation_mark: bool = False
 
     @property
-    def base_unique_id(self):
+    def dir_unique_id(self):
         """ Get the unique result directory name. """
-        return self.__BASE_UNIQUE_ID
+        return self.__DIR_UNIQUE_ID
 
     @property
-    def root_directory(self):
-        """ Get the path to the parsing root directory. """
-        return self.__root_directory
+    def base_directory(self):
+        """ Get the path to the parsing base directory. """
+        return self.__base_directory
 
     @property
     def result_directory(self):
         """ Get the path to the result directory. """
-        return Path.joinpath(self.root_directory, self.base_unique_id)
+        return Path.joinpath(self.base_directory, self.dir_unique_id)
 
     @property
     def log_file(self):
@@ -107,7 +107,7 @@ class VocabConfig:
 
     def set_singular(self) -> None:
         """ Create a singular-transformer. """
-        self.__singular = sng.SingularAttrib(self.base_unique_id)
+        self.__singular = sng.SingularAttrib(self.dir_unique_id)
 
     @property
     def infinit(self):
@@ -116,7 +116,7 @@ class VocabConfig:
 
     def set_infinitive(self) -> None:
         """ Create an infinitive-transformer. """
-        self.__infinit = inf.InfinitAttrib(self.base_unique_id)
+        self.__infinit = inf.InfinitAttrib(self.dir_unique_id)
 
     @property
     def verbs_ending_s(self) -> set:
@@ -134,8 +134,8 @@ class VocabConfig:
         f"\n{'-'*40}\n"
         f"{__class__}\n"
         f"# VOCABULARY\n"
-        f"base_unique_id = {self.base_unique_id}\n"
-        f"root_directory = {self.root_directory}\n"
+        f"dir_unique_id = {self.dir_unique_id}\n"
+        f"base_directory = {self.base_directory}\n"
         f"result_directory = {self.result_directory}\n"
         f"result_file = {self.result_file}\n"
         f"directories_file = {self.directories_file}\n"

@@ -34,10 +34,10 @@ def write_directories(vocab: vcb.VocabConfig):
             old_lines = re.findall(f'{mark_file} (.+txt) *(V+)', content)
 
     old_dict = dict(old_lines)
-    offset = len(vocab.root_directory.parts) - 1
+    offset = len(vocab.base_directory.parts) - 1
 
-    # Path.walk traverses the directory tree, starting from the root
-    for dirpath, dirs, files in Path.walk(vocab.root_directory, on_error = handle_error):
+    # Path.walk traverses the directory tree, starting from the base
+    for dirpath, dirs, files in Path.walk(vocab.base_directory, on_error = handle_error):
 
         dirpath_parts = Path(*dirpath.parts[offset::])
 
@@ -46,14 +46,14 @@ def write_directories(vocab: vcb.VocabConfig):
             continue
             
         # Determine the nesting level
-        level = len(dirpath.parts) - len(vocab.root_directory.parts)
+        level = len(dirpath.parts) - len(vocab.base_directory.parts)
         # Set the indentation to 4 spaces per level
         indent = ' ' * 4 * level
 
         # Show the current directory name
         # If the PyInstaller executable sets the root directory to '.'
         if level == 0 and dirpath.name == '':
-            cur_list = re.split(r'[\\/]', str(vocab.root_directory.resolve()))
+            cur_list = re.split(r'[\\/]', str(vocab.base_directory.resolve()))
             new_lines.append(f'{indent}{mark_folder} {cur_list[len(cur_list) - 1]}/')
         else:
             new_lines.append(f'{indent}{mark_folder} {dirpath.name}/')

@@ -24,12 +24,12 @@ class InfinitAttrib:
     __verbs_ending_e: set = None
     __verbs_ending_non_ed: set = None
 
-    def __init__(self, base_unique_id: str):
+    def __init__(self, dir_unique_id: str):
         """ Initialize the `Infinitive transformation configuration`.
         Args:
-            base_unique_id (str): Unique base directory.
+            dir_unique_id (str): Unique base directory.
         """
-        self.__base_unique_id = base_unique_id
+        self.__dir_unique_id = dir_unique_id
         self.initialize()
 
     @classmethod
@@ -77,11 +77,9 @@ class InfinitAttrib:
     def infinitive_path(self):
         """ Get /Documents/Infinitive directory. """
         if self.__documents_path.exists() and self.__documents_path.is_dir():
-            # return Path.joinpath(self.__documents_path, self.__vocab.base_unique_id, "Infinitive")
-            return Path.joinpath(self.__documents_path, self.__base_unique_id, "Infinitive")
+            return Path.joinpath(self.__documents_path, self.__dir_unique_id, "Infinitive")
         else:
-            # return Path.joinpath(self.__home, self.__vocab.base_unique_id, "Infinitive")
-            return Path.joinpath(self.__home, self.__base_unique_id, "Infinitive")
+            return Path.joinpath(self.__home, self.__dir_unique_id, "Infinitive")
 
     # infinitive in
     @property

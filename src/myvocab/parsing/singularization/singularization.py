@@ -16,12 +16,12 @@ class SingularAttrib:
     __irregular_plural_nouns: dict = None
     __reviewed_pairs: dict = None
 
-    def __init__(self, base_unique_id: str):
+    def __init__(self, dir_unique_id: str):
         """ Initialize the `Singular transformation configuration`.
         Args:
-            base_unique_id (str): Unique base directory.
+            dir_unique_id (str): Unique base directory.
         """
-        self.__base_unique_id = base_unique_id
+        self.__dir_unique_id = dir_unique_id
         self.initialize()
 
     # Singularization 
@@ -31,9 +31,9 @@ class SingularAttrib:
     def singularization_path(self):
         """ Get /Documents/Singularization directory. """
         if self.__documents_path.exists() and self.__documents_path.is_dir():
-            return Path.joinpath(self.__documents_path, self.__base_unique_id, "Singularization")
+            return Path.joinpath(self.__documents_path, self.__dir_unique_id, "Singularization")
         else:
-            return Path.joinpath(self.__home, self.__base_unique_id, "Singularization")
+            return Path.joinpath(self.__home, self.__dir_unique_id, "Singularization")
 
     # Singularization in
     @property
