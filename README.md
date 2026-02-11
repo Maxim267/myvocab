@@ -89,6 +89,8 @@ To launch the program, double-click the executable or run the scripts:
     myvocab.exe -D
     myvocab.exe C:\full\path\to\base_directory
 
+Running the exe from the base directory eliminates the need to specify this path.
+
 ## Changing authentication and installing packages
 
 ### Using public function to get an IAM token
