@@ -63,6 +63,7 @@ anti-virus
 antithesis
 anus
 anxious
+apodosis
 apoptosis
 apotheosis
 apparatus
@@ -74,6 +75,7 @@ arduous
 argus
 arras
 arthritis
+as
 asbestos
 ascites
 asparagus
@@ -83,6 +85,7 @@ assess
 assiduous
 astrophysics
 astuteness
+asus
 asynchronous
 atherosclerosis
 atlas
@@ -157,6 +160,7 @@ brashness
 brass
 breathless
 breathlessness
+brevis
 brightness
 britches
 brittleness
@@ -263,6 +267,7 @@ completeness
 comprehensiveness
 compress
 confess
+confucius
 congress
 coniferous
 connectedness
@@ -363,6 +368,7 @@ distinctiveness
 distinctness
 distress
 dizziness
+does
 doldrums
 doubtless
 downstairs
@@ -392,6 +398,7 @@ efficacious
 effortless
 egress
 electrolysis
+electronics
 electrophoresis
 elevenses
 ellipsis
@@ -571,6 +578,7 @@ harmonious
 harness
 harris
 harshness
+has
 hastings
 have-nots
 haves
@@ -579,6 +587,7 @@ headdress
 headless
 headmistress
 headphones
+headquarters
 heartless
 heaviness
 heinous
@@ -668,7 +677,7 @@ invidious
 inwards
 iris
 ironworks
-isis
+is
 isthmus
 jacobs
 jacques
@@ -705,7 +714,7 @@ lawless
 lawlessness
 laziness
 lens
-les
+less
 let's
 letterpress
 lewis
@@ -715,6 +724,7 @@ lifeless
 lightness
 likeness
 limitless
+linguistics
 lioness
 liss
 listless
@@ -863,6 +873,7 @@ notorious
 nous
 nowadays
 noxious
+ntfs
 nucleus
 numbness
 numerous
@@ -974,6 +985,7 @@ poliomyelitis
 poliovirus
 polis
 politeness
+politics
 polyneuritis
 polyposis
 pompous
@@ -1023,6 +1035,7 @@ propitious
 proprietress
 prospectus
 prosperous
+protasis
 protectiveness
 proteus
 prowess
@@ -1102,6 +1115,7 @@ ruinous
 rumpus
 ruthless
 ruthlessness
+saas
 sacredness
 sadness
 sameness
@@ -1203,6 +1217,7 @@ stairs
 staphylococcus
 starkness
 stasis
+stateless
 statistics
 stats
 status
@@ -1255,6 +1270,7 @@ symbiosis
 synchronous
 synonymous
 synopsis
+syntactics
 synthesis
 syphilis
 tactless
@@ -1467,3 +1483,7 @@ yonks
 yours
 youthfulness
 zealous
+macos
+ohss
+bios
+phonemics

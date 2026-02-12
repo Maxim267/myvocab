@@ -128,6 +128,7 @@ speed
 steed
 stinkweed
 tarweed
+ted
 thoroughbred
 toolshed
 tumbleweed
@@ -136,6 +137,8 @@ unabridged
 uncircumcised
 unconfessed
 unemployed
+unexpected
+unrelated
 volkslied
 watershed
 waterweed

@@ -1,6 +1,7 @@
 abate
 abide
 abuse
+abbreviate
 accede
 accelerate
 accentuate
@@ -23,6 +24,7 @@ advance
 advertise
 advise
 advocate
+aerobicize
 age
 aggravate
 aggregate
@@ -326,6 +328,7 @@ elaborate
 elapse
 elevate
 eliminate
+elongate
 elucidate
 elude
 emanate
@@ -474,6 +477,7 @@ impinge
 impose
 improve
 improvise
+incise
 incline
 include
 inconvenience
@@ -501,6 +505,7 @@ integrate
 interface
 interfere
 intermediate
+intermingle
 interrogate
 intervene
 intimate
@@ -583,6 +588,7 @@ mope
 motivate
 move
 muddle
+mute
 name
 navigate
 necessitate
@@ -605,6 +611,7 @@ obviate
 operate
 oppose
 optimise
+optimize
 organise
 organize
 originate

@@ -1,3 +1,6 @@
 will
 discuss
 access
+call
+spell
+install
