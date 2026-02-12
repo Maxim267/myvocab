@@ -30,7 +30,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             "pair": "" if cur_word == val else f"{cur_word} - {val}"
         }
     # It requires a word ending in -s
-    elif re.findall(r'.+s\b', cur_word):
+    elif word_s := re.findall(r'(.+)s\b', cur_word):
 
         # Searching for a word  with invariable '-s' endings in the set
         if cur_word in vocab.singular.only_ending_s:
@@ -38,6 +38,14 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
                 "id": 20,
                 "word": cur_word,
                 "pair": ""
+            }
+        # Skip further processing for words whose base form does not end in '-s' if they are present in the set.
+        elif word_s[0] in vocab.singular.singular_ending_non_s:
+            val = word_s[0]
+            cur_data = {
+                "id": 30,
+                "word": val,
+                "pair": cur_word + " - " + val
             }
         else:
             # It requires a word ending in -ves
@@ -57,15 +65,12 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
                             if not word_es:
                                 # The alphanumeric string ends with 's' (like '1980s')
                                 word_09 = re.findall(r'.+[0-9]+s\b', cur_word)
-                                if not word_09:
-                                    # It requires a word ending in '-s'
-                                    word_s = re.findall(r'(.+)s\b', cur_word)
 
             # Replace '-ves' with '-fe' and look up in the set
             if word_ves and word_ves[0] + 'fe' in vocab.singular.singular_ending_non_s:
                 val = word_ves[0] + 'fe'
                 cur_data = {
-                    "id": 30,
+                    "id": 40,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -73,7 +78,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_ves and word_ves[0] + 'f' in vocab.singular.singular_ending_non_s:
                 val = word_ves[0] + 'f'
                 cur_data = {
-                    "id": 40,
+                    "id": 50,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -81,7 +86,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_ves:
                 val = word_ves[0] + 'f'
                 cur_data = {
-                    "id": 50,
+                    "id": 60,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -89,7 +94,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_o_es_s and word_o_es_s[0][0] in vocab.singular.singular_ending_non_s:
                 val = word_o_es_s[0][0]
                 cur_data = {
-                    "id": 60,
+                    "id": 70,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -97,7 +102,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_o_es_s:
                 val = word_o_es_s[0][0]
                 cur_data = {
-                    "id":70,
+                    "id":80,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -105,7 +110,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_ies and word_ies[0] in vocab.singular.singular_ending_non_s:
                 val = word_ies[0] + 'y'
                 cur_data = {
-                    "id": 80,
+                    "id": 90,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -113,7 +118,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_ies:
                 val = word_ies[0] + 'y'
                 cur_data = {
-                    "id": 90,
+                    "id": 100,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -121,7 +126,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_ys and word_ys[0] in vocab.singular.singular_ending_non_s:
                 val = word_ys[0]
                 cur_data = {
-                    "id": 100,
+                    "id": 110,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -129,7 +134,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_ys:
                 val = word_ys[0]
                 cur_data = {
-                    "id": 110,
+                    "id": 120,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -138,7 +143,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_es and word_es[0][1] == 's' and word_es[0][0] in vocab.singular.only_ending_s:
                 val = word_es[0][0]
                 cur_data = {
-                    "id": 120,
+                    "id": 130,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -147,7 +152,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_es and word_es[0][1] != 's' and word_es[0][0] in vocab.singular.singular_ending_non_s:
                 val = word_es[0][0]
                 cur_data = {
-                    "id": 130,
+                    "id": 140,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -156,22 +161,22 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_es:
                 val = word_es[0][0]
                 cur_data = {
-                    "id": 140,
+                    "id": 150,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
             # Removes '-s'
             elif word_09:
                 cur_data = {
-                    "id": 150,
+                    "id": 160,
                     "word": cur_word,
                     "pair": ""
                 }
             # Removes '-s'
-            elif word_s:
+            else:
                 val = word_s[0]
                 cur_data = {
-                    "id": 160,
+                    "id": 170,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
