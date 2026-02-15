@@ -131,3 +131,15 @@ class VariableIsNotFoundError(VocabError):
 
     def __str__(self):
         return f"{self.message} '{self.variable}'"
+
+class ChunkSizeSmallError(VocabError):
+    """Raised when a chunk size is too small."""
+
+    def __init__(self, size, expected_size, message="The chunk size is too small:"):
+        self.size = size
+        self.expected_size = expected_size
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f"{self.message} {self.size} (expected {self.expected_size})"

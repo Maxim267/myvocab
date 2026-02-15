@@ -25,7 +25,6 @@ def write_directories(vocab: vcb.VocabConfig):
     mark_file = '📄'
 
     old_lines = set()
-    # old_dict = dict()
     new_lines = list()
 
     if vocab.directories_file.exists():  
