@@ -55,6 +55,13 @@ def set_transformer (word: str, vocab: vcb.VocabConfig) -> dict:
 
    return vdata
 
+def remove_translate_mark(items: list) -> list:
+   return_items = list(items)
+   for index, item in enumerate(items):
+      if find_list := re.findall(f'{cns.TAG_TRANSLATE}(.+)', item):
+         return_items[index] = find_list[0]
+   return return_items
+
 def render_vocab(base_path: Path):
    """ Generate a vocabulary from the base directory.
 
@@ -307,6 +314,7 @@ def render_vocab(base_path: Path):
             translated = None if vocab.use_order_text else translated_words
             all_list = translate(vdata.get("access_token"), all_list, vocab.result_file.parent, translated)
          else:
+            all_list = remove_translate_mark(all_list)
             logger.error(f"Failed to retrieve the Translate API token.")
 
    # Vocabulary

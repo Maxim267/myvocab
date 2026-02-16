@@ -157,12 +157,8 @@ def translate(iam: str, words: list, result_directory: Path, translated_words: d
                                 else:
                                     num = chunk_map.get(ind)
                                     if num is not None:
-                                        # Cache the word
-                                        if translated_words is not None:
-                                            translated_words[return_words[num]] = word[1]
-                                        else:
-                                            # Bilingual word pair
-                                            return_words[num] = return_words[num] + " - " + word[1]
+                                        # Bilingual word pair
+                                        return_words[num] = return_words[num] + " - " + word[1]
                                         # The remaining data is logged to the error log
                                         chunk_map.pop(ind)
                                     else:

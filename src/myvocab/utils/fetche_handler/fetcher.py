@@ -51,7 +51,9 @@ def get(url: str, headers: dict) -> dict:
         response.raise_for_status()
 
     except requests.exceptions.HTTPError as http_err:
-        logger.warning(f"HTTP error occurred: {http_err}\n{data['message']}")  # e.g., 404 Not Found or 500 Server Error
+        if not (mess := data.get('message')):
+            mess = data.get('errorMessage')
+        logger.warning(f"HTTP error occurred: {http_err}\n{mess}")  # e.g., 404 Not Found or 500 Server Error
     except requests.exceptions.ConnectionError:
         logger.warning("Connection error: Check your internet or the server URL.")
     except requests.exceptions.Timeout:
