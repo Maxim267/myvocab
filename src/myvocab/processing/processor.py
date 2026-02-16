@@ -55,7 +55,7 @@ def set_transformer (word: str, vocab: vcb.VocabConfig) -> dict:
 
    return vdata
 
-def remove_translate_mark(items: list) -> list:
+def remove_translation_marks(items: list) -> list:
    return_items = list(items)
    for index, item in enumerate(items):
       if find_list := re.findall(f'{cns.TAG_TRANSLATE}(.+)', item):
@@ -296,6 +296,7 @@ def render_vocab(base_path: Path):
             translated = None if vocab.use_order_text else translated_words
             all_list = translate(vdata.get("iamToken"), all_list, vocab.result_file.parent, translated)
          else:
+            all_list = remove_translation_marks(all_list)
             logger.error(f"Failed to retrieve the Translate API token.")
 
       elif auth == 'exchange_jwt_iam':
@@ -305,6 +306,7 @@ def render_vocab(base_path: Path):
             translated = None if vocab.use_order_text else translated_words
             all_list = translate(iam_token, all_list, vocab.result_file.paren, translated)
          except Exception as e:
+            all_list = remove_translation_marks(all_list)
             logger.error(f"Failed to retrieve the Translate API token: {e}")
 
       else:
@@ -314,7 +316,7 @@ def render_vocab(base_path: Path):
             translated = None if vocab.use_order_text else translated_words
             all_list = translate(vdata.get("access_token"), all_list, vocab.result_file.parent, translated)
          else:
-            all_list = remove_translate_mark(all_list)
+            all_list = remove_translation_marks(all_list)
             logger.error(f"Failed to retrieve the Translate API token.")
 
    # Vocabulary
