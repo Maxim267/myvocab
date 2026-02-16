@@ -27,7 +27,7 @@ def main(base_directory: Path, level: str):
         base_directory = Path.cwd()
     print(f"The base directory for parsing text files: {str(base_directory.resolve())}")
 
-    continue_program = get_yes_no_input("Do you want to continue?", default="yes")
+    continue_program = get_yes_no_input("Do you want to continue with this directory?", default="yes")
 
     if continue_program:
         prc.render_vocab(base_directory)
@@ -35,7 +35,7 @@ def main(base_directory: Path, level: str):
     else:
         continue_program = get_yes_no_input("Do you want to enter a new directory for parsing text files?", default="yes")
         if continue_program:
-            base_directory = Path(input("New base directory for parsing text files: "))
+            base_directory = Path(input("Enter new base directory for parsing text files: "))
             prc.render_vocab(base_directory)
             input("Press Enter to exit...")
 

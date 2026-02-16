@@ -15,8 +15,8 @@
 
 	При запуске `myvocab` выводится сообщение:
 	
-	> The root directory for parsing text files: C:\путь\к\папке
-	> Do you want to continue? [Y/n]:
+	> The base directory for parsing text files: C:\путь\к\папке
+	> Do you want to continue with this directory? [Y/n]:
 
 	Необходимо нажать `n`, если указанная папка не является целевой для парсинга текстовых файлов.
 	Далее выводится сообщение:
@@ -26,7 +26,7 @@
 	Если нажать `n` программа завершится.
 	Если нажать `Enter` (по умолчанию Y) выводится сообщение:
 	
-	> New root directory for parsing text files:
+	> Enter new base directory for parsing text files:
 	
 	где необходимо ввести путь к базовой директории парсинга текстовых файлов, например,
 	
