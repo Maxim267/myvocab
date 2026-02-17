@@ -136,12 +136,12 @@ class SingularAttrib:
         """ Return the content of all used directories as a string. """
         cur_str = (
         f"# SINGULARIZATION\n"
-        f"{self.only_ending_s_path}\n"
-        f"{self.singular_ending_non_s_path}\n"
-        f"{self.irregular_plural_nouns_path}\n"
-        f"{self.reviewed_pairs_path}\n"
-        f"{self.parsed_pairs_path}\n"
-        f"{self.unreviewed_pairs_path}\n"
+        f"{str(self.only_ending_s_path.resolve())}\n"
+        f"{str(self.singular_ending_non_s_path.resolve())}\n"
+        f"{str(self.irregular_plural_nouns_path.resolve())}\n"
+        f"{str(self.reviewed_pairs_path.resolve())}\n"
+        f"{str(self.parsed_pairs_path.resolve())}\n"
+        f"{str(self.unreviewed_pairs_path.resolve())}\n"
         )
         return cur_str
 

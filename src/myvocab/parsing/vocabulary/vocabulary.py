@@ -157,11 +157,11 @@ class VocabConfig:
         """ Return the content of all used directories as a string. """
         cur_str = (
         f"# VOCABULARY\n"
-        f"{self.result_file}\n"
-        f"{self.directories_file}\n"
-        f"{self.settings_file}\n"
-        f"{self.all_patches_file}\n"
-        f"{self.log_file}\n"
+        f"{str(self.result_file.resolve())}\n"
+        f"{str(self.directories_file.resolve())}\n"
+        f"{str(self.settings_file.resolve())}\n"
+        f"{str(self.all_patches_file.resolve())}\n"
+        f"{str(self.log_file.resolve())}\n"
         f"{"" if self.singular is None else f"{self.singular.str_path()}"}"
         f"{"" if self.infinit is None else f"{self.infinit.str_path()}"}"
         )

@@ -209,13 +209,13 @@ class InfinitAttrib:
         """ Return the content of all used directories as a string. """
         cur_set = (
         f"# INFINITIVIZATION\n"
-        f"{self.irregular_verbs_path}\n"
-        f"{self.only_ending_ed_path}\n"
-        f"{self.verbs_ending_e_path}\n"
-        f"{self.verbs_ending_non_ed_path}\n"
-        f"{self.reviewed_pairs_path}\n"
-        f"{self.parsed_pairs_path}\n"
-        f"{self.unreviewed_pairs_path}\n"
+        f"{str(self.irregular_verbs_path.resolve())}\n"
+        f"{str(self.only_ending_ed_path.resolve())}\n"
+        f"{str(self.verbs_ending_e_path.resolve())}\n"
+        f"{str(self.verbs_ending_non_ed_path.resolve())}\n"
+        f"{str(self.reviewed_pairs_path.resolve())}\n"
+        f"{str(self.parsed_pairs_path.resolve())}\n"
+        f"{str(self.unreviewed_pairs_path.resolve())}\n"
         )
         return cur_set
 

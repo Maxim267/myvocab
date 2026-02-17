@@ -121,6 +121,9 @@ def render_vocab(base_path: Path):
 
    logger.info("Populating a new vocabulary with isolated words and phrases ...")
    offset = len(vocab.base_directory.parts) - 1
+   # If the PyInstaller executable sets the base directory to '.'
+   if offset < 0:
+      offset = 0
 
    # Show the `activity indicator`
    print(f"Parsing files: ", end="", flush=True)

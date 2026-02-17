@@ -34,6 +34,9 @@ def write_directories(vocab: vcb.VocabConfig):
 
     old_dict = dict(old_lines)
     offset = len(vocab.base_directory.parts) - 1
+    # If the PyInstaller executable sets the base directory to '.'
+    if offset < 0:
+        offset = 0
 
     # Path.walk traverses the directory tree, starting from the base
     for dirpath, dirs, files in Path.walk(vocab.base_directory, on_error = handle_error):
@@ -50,7 +53,7 @@ def write_directories(vocab: vcb.VocabConfig):
         indent = ' ' * 4 * level
 
         # Show the current directory name
-        # If the PyInstaller executable sets the root directory to '.'
+        # If the PyInstaller executable sets the base directory to '.'
         if level == 0 and dirpath.name == '':
             cur_list = re.split(r'[\\/]', str(vocab.base_directory.resolve()))
             new_lines.append(f'{indent}{mark_folder} {cur_list[len(cur_list) - 1]}/')
