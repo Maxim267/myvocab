@@ -53,6 +53,8 @@ Copy the path and activate the .venv:
 
     C:\full\path\to\myvocab\.venv\Scripts\activate.ps1
 
+Verify that the command line begins with (myvocab-pyx.xx)
+
 Install missing packages and remove unneeded ones:
 
     poetry sync
