@@ -1,7 +1,15 @@
+import logging
 from pathlib import Path
 import re
 import os
 from src.myvocab.exceptions import exceptions as exc
+from src.myvocab.authentication.auth_yandex.function_iam.fetch_iam_func import fetch_iam_func
+from src.myvocab.translation.translation_yandex.supported_languages import fetch_languages
+from src.myvocab.translation.translation_yandex.supported_languages import get_languages_list
+from src.myvocab.translation.translation_yandex.supported_languages import find_target_language_code
+from src.myvocab.parsing.commands.save_file import save_file
+
+logger = logging.getLogger(__name__)
 
 def validate_base_directory(base_path: Path):
     """ Validate base directory. """
@@ -47,3 +55,29 @@ def validate_directory_with_leading_exclamation_mark(directory_path: Path | str,
                 raise exc.DirectoryExclamationMarkError(directory_path)
             else:
                 raise exc.DirectoryExclamationMarkError(directory_path, message)
+
+def validate_target_language_code(target_language_code: str, target_languages_file: Path) -> tuple:
+    """ Validate the target language. """
+
+    def create_target_languages_file(trg_languages_file: Path):
+        """ Create the target language file. """
+        fetch_data = fetch_iam_func()
+        if iam_token := fetch_data.get("access_token"):
+            fetch_langs = fetch_languages(iam_token)
+            if not fetch_langs["ok"]:
+                raise exc.FetchSupportedLanguagesError("")
+            langs = get_languages_list(fetch_langs)
+            save_file(file_path=trg_languages_file, items=langs, is_sorted=False)
+        else:
+            raise exc.FetchIAMtokenError("during target language validation.")
+    # Find the target language code
+    target_language = find_target_language_code(target_language_code, target_languages_file)
+    if not target_language:
+        create_target_languages_file(target_languages_file)
+        target_language = find_target_language_code(target_language_code, target_languages_file)
+        if target_language:
+            return target_language
+        else:
+            raise exc.TargetLanguageCodeIsNotFoundError(target_language_code)
+    else:
+        return target_language

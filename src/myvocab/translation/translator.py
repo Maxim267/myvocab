@@ -4,30 +4,27 @@ from pathlib import Path
 from src.myvocab.constants import constants as cns
 from src.myvocab.exceptions import exceptions as exc
 from src.myvocab.parsing.commands.save_file import save_file
-from src.myvocab.translation.fetch_translate import fetch_translate
+from src.myvocab.translation.translation_yandex.fetch_translate import fetch_translate
 
 logger = logging.getLogger(__name__)
-
-# Translation target chunk size (Yandex Translate API has a 10_000 character limit per request)
-TRANSLATE_CHUNK_SIZE = 10_000
-# Folder for sent and received translation chunks
-TRANSLATE_FOLDER = 'Translate'
 
 # Wrap a word in a template with an ID
 def format_word(num: int, word: str) -> str:
     return '@' + str(num) + '@ ' + word + ' @'
 
-def translate(iam: str, words: list, result_directory: Path, translated_words: dict = None, is_wrap_ids: bool = False) -> list:
+def translate(iam: str, words: list, target_language_code: str, result_directory: Path, translated_words: dict = None,
+              is_wrap_ids: bool = False) -> list:
     """
     Fetch translations for a list of words through an API.
     Args:
-        iam: An IAM token is a unique sequence of characters issued to a user after authentication.
-        words: The list of English words to be translated.
-        result_directory: Target directory for translation files.
-        translated_words: Caching translations for reuse. If None, caching is skipped as input words are assumed to be unique.
-        is_wrap_ids: Using an ID-tagged wrapper template to ensure reversible parsing: @d+@ word @.
+        iam (str): An IAM token is a unique sequence of characters issued to a user after authentication.
+        words (list): The list of English words to be translated.
+        target_language_code (str): Target language code.
+        result_directory (Path): Target directory for translation files.
+        translated_words (dict): Caching translations for reuse. If None, caching is skipped as input words are assumed to be unique.
+        is_wrap_ids (bool): Using an ID-tagged wrapper template to ensure reversible parsing: @d+@ word @.
     Returns:
-        The List of bilingual word pairs.
+        list: The List of bilingual word pairs.
     """
 
     # Populate a new list based on the input
@@ -81,7 +78,7 @@ def translate(iam: str, words: list, result_directory: Path, translated_words: d
                     wrapped_word = format_word(chunk_index + 1, word)
                     word_length = len(wrapped_word)
                 # Increase chunk size to a target size
-                if chunk_size + word_length <= TRANSLATE_CHUNK_SIZE:
+                if chunk_size + word_length <= cns.TRANSLATE_CHUNK_SIZE:
                     chunk_size += word_length
                     chunk_index += 1
 
@@ -106,8 +103,8 @@ def translate(iam: str, words: list, result_directory: Path, translated_words: d
                         chunk.append(word)
                 else:
                     # The chunk size is too small
-                    if word_length > TRANSLATE_CHUNK_SIZE:
-                        raise exc.ChunkSizeSmallError(TRANSLATE_CHUNK_SIZE, word_length)
+                    if word_length > cns.TRANSLATE_CHUNK_SIZE:
+                        raise exc.ChunkSizeSmallError(cns.TRANSLATE_CHUNK_SIZE, word_length)
                     break
             main_index += 1
 
@@ -115,7 +112,7 @@ def translate(iam: str, words: list, result_directory: Path, translated_words: d
         if len(chunk) > 0:
             logger.info(f"\n{chunk_num}: Translation ...")
 
-            translate_path = Path.joinpath(result_directory, TRANSLATE_FOLDER)
+            translate_path = Path.joinpath(result_directory, cns.TRANSLATE_FOLDER)
 
             # Save outgoing chunk if log level is DEBUG
             if logger.getEffectiveLevel() == logging.DEBUG:
@@ -125,7 +122,7 @@ def translate(iam: str, words: list, result_directory: Path, translated_words: d
                 save_file(Path.joinpath(translate_path, f"{chunk_num} chunk sent for translation.txt"), chunk, False)
 
             # Translate the chunk list
-            fetch_data = fetch_translate(iam, chunk)
+            fetch_data = fetch_translate(iam, chunk, target_language_code)
 
             # Save incoming chunk if log level is DEBUG
             if logger.getEffectiveLevel() == logging.DEBUG:

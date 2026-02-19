@@ -34,10 +34,15 @@ class VocabConfig:
     __DIR_UNIQUE_ID: str = f"{__DIR_NAME}_{__UNIQUE_ID}"
     __SETTINGS_FILE_NAME: str = "settings.txt"
     __ALL_PATCHES_FILE_NAME: str = "view_all_used_paths.txt"
+    __TARGET_LANGUAGES_FILE_NAME: str = "supported_target_languages.txt"
     __LOG_FILE_NAME: str = "app.log"
 
     __result_file_name: str = "vocabulary.txt"
     __directories_file_name: str = "directories.txt"
+    __source_language_code: str = "en"
+    __source_language: str = "English"
+    __target_language_code: str = "ru"
+    __target_language: str = "русский"
 
     # Flag to enable singular transformation
     use_lemma_singular: bool = True
@@ -91,6 +96,36 @@ class VocabConfig:
         self.__directories_file_name = directories_file_name
 
     @property
+    def source_language_code(self):
+        """ Get the target language. """
+        return self.__source_language_code
+
+    @property
+    def source_language(self):
+        """ Get the target language. """
+        return self.__source_language
+
+    @property
+    def target_language_code(self):
+        """ Get the target language. """
+        return self.__target_language_code
+
+    @target_language_code.setter
+    def target_language_code(self, target_language_code):
+        """ Set the target language. """
+        self.__target_language_code = target_language_code
+
+    @property
+    def target_language(self):
+        """ Get the target language. """
+        return self.__target_language
+
+    @target_language.setter
+    def target_language(self, target_language):
+        """ Set the target language. """
+        self.__target_language = target_language
+
+    @property
     def settings_file(self):
         """ Get the path to the settings file. """
         return Path.joinpath(self.result_directory, self.__SETTINGS_FILE_NAME)
@@ -99,6 +134,11 @@ class VocabConfig:
     def all_patches_file(self):
         """ Get the path to the file that contains all used paths. """
         return Path.joinpath(self.result_directory, self.__ALL_PATCHES_FILE_NAME)
+
+    @property
+    def target_languages_file(self):
+        """ Get the path to the supported languages file. """
+        return Path.joinpath(self.result_directory, self.__TARGET_LANGUAGES_FILE_NAME)
 
     @property
     def singular(self):
@@ -141,10 +181,12 @@ class VocabConfig:
         f"directories_file = {self.directories_file}\n"
         f"settings_file = {self.settings_file}\n"
         f"all_patches_file = {self.all_patches_file}\n"
+        f"target_languages_file = {self.target_languages_file}\n"
         f"log_file = {self.log_file}\n"
         f"use_lemma_singular = {self.use_lemma_singular}\n"
         f"use_lemma_infinit = {self.use_lemma_infinit}\n"
         f"use_word_translate = {self.use_word_translate}\n"
+        f"target_language = {self.target_language}\n"
         f"use_order_text = {self.use_order_text}\n"
         f"use_folder_with_leading_exclamation_mark = {self.use_folder_with_leading_exclamation_mark}\n"
         f"{"" if self.singular is None else f"{self.singular}"}"
@@ -161,6 +203,7 @@ class VocabConfig:
         f"{str(self.directories_file.resolve())}\n"
         f"{str(self.settings_file.resolve())}\n"
         f"{str(self.all_patches_file.resolve())}\n"
+        f"{str(self.target_languages_file.resolve())}\n"
         f"{str(self.log_file.resolve())}\n"
         f"{"" if self.singular is None else f"{self.singular.str_path()}"}"
         f"{"" if self.infinit is None else f"{self.infinit.str_path()}"}"

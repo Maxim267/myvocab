@@ -118,6 +118,9 @@ def render_vocab(base_path: Path):
    if vocab.use_word_translate:
       # Tag for translation
       trn_tag = cns.TAG_TRANSLATE
+      logger.info(f"Translation direction: " +
+                  f"`{vocab.source_language}` to `{vocab.target_language}` " +
+                  f"(`{vocab.source_language_code}` -> `{vocab.target_language_code}`)")
 
    logger.info("Populating a new vocabulary with isolated words and phrases ...")
    offset = len(vocab.base_directory.parts) - 1
@@ -295,32 +298,47 @@ def render_vocab(base_path: Path):
       if auth == 'account_iam':
          # To get an IAM token with a Yandex account
          vdata = fetch_iam_oauth()
-         if vdata.get("ok") and vdata.get("iamToken"):
-            translated = None if vocab.use_order_text else translated_words
-            all_list = translate(vdata.get("iamToken"), all_list, vocab.result_file.parent, translated)
+         if vdata.get("ok") and (iam_token := vdata.get("iamToken")):
+            transl_words = None if vocab.use_order_text else translated_words
+            all_list = translate(
+               iam=iam_token,
+               words=all_list,
+               target_language_code=vocab.target_language_code,
+               result_directory=vocab.result_file.parent,
+               translated_words=transl_words)
          else:
             all_list = remove_translation_marks(all_list)
-            logger.error(f"Failed to retrieve the Translate API token.")
+            logger.error(f"Failed to fetch IAM token while preparing to translate.")
 
       elif auth == 'exchange_jwt_iam':
          # To get an IAM token with an Authorized keys.
          try:
             iam_token = create_iam_token()
-            translated = None if vocab.use_order_text else translated_words
-            all_list = translate(iam_token, all_list, vocab.result_file.paren, translated)
+            transl_words = None if vocab.use_order_text else translated_words
+            all_list = translate(
+               iam=iam_token,
+               words=all_list,
+               target_language_code=vocab.target_language_code,
+               result_directory=vocab.result_file.parent,
+               translated_words=transl_words)
          except Exception as e:
             all_list = remove_translation_marks(all_list)
-            logger.error(f"Failed to retrieve the Translate API token: {e}")
+            logger.error(f"Failed to fetch IAM token while preparing to translate: {e}")
 
       else:
          # To get an IAM token from the function code in Yandex Cloud Functions
          vdata = fetch_iam_func()
-         if vdata.get("access_token"):
-            translated = None if vocab.use_order_text else translated_words
-            all_list = translate(vdata.get("access_token"), all_list, vocab.result_file.parent, translated)
+         if iam_token := vdata.get("access_token"):
+            transl_words = None if vocab.use_order_text else translated_words
+            all_list = translate(
+               iam=iam_token,
+               words=all_list,
+               target_language_code=vocab.target_language_code,
+               result_directory=vocab.result_file.parent,
+               translated_words=transl_words)
          else:
             all_list = remove_translation_marks(all_list)
-            logger.error(f"Failed to retrieve the Translate API token.")
+            logger.error(f"Failed to fetch IAM token while preparing to translate.")
 
    # Vocabulary
    if not vocab.result_file.is_file():
