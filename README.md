@@ -4,11 +4,11 @@
 
 Any text outside the `<<word>>` and `<</word>>` tag-only strings is treated as raw file lines. 
 Text enclosed in `<<word>>` and `<</word>>` tag-only strings is interpreted as a list of isolated English words, 
-which can optionally be converted to their singular or infinitive forms and translated into Russian.
+which can optionally be converted to their singular or infinitive forms and translated into supported languages.
 Set options in the auto-generated base_directory/Myvocab_58b254sv/settings.txt.
 This directory contains all program output data.
 
-Please refer to the `tests/instructions` for instructions in Russian.
+Please refer to the `doc/instructions` for instructions in Russian.
 
 ## Installing tools
 
