@@ -30,37 +30,47 @@ def load_settings(vocab: vcb.VocabConfig) -> None:
                 try:
                     vld.validate_file_name(vocab.result_file.parent, word[1].strip())
                     vocab.result_file = word[1].strip()
-                except Exception as e:
+                except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
             elif word[0].strip() == 'directories_file':
                 try:
                     vld.validate_file_name(vocab.directories_file.parent, word[1].strip())
                     vocab.directories_file = word[1].strip()
-                except Exception as e:
+                except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
             elif word[0].strip() == 'use_word_translate':
                 try:
                     vld.validate_bool_value(cns.BOOLEAN_STRINGS, word[1].strip())
                     vocab.use_word_translate = (word[1].strip().lower() in cns.TRUTH_STRINGS)
-                except Exception as e:
+                except exc.VocabError as e:
+                    logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
+            elif word[0].strip() == 'target_language_code':
+                try:
+                    target_language = vld.validate_target_language_code(word[1].strip(), vocab.target_languages_file)
+                    vocab.target_language_code = target_language[0]
+                    vocab.target_language = target_language[1]
+                except exc.TargetLanguageCodeIsNotFoundError as e:
+                    vocab.use_word_translate = False
+                    logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
+                except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
             elif word[0].strip() == 'use_lemma_singular':
                 try:
                     vld.validate_bool_value(cns.BOOLEAN_STRINGS, word[1].strip())
                     vocab.use_lemma_singular = (word[1].strip().lower() in cns.TRUTH_STRINGS)
-                except Exception as e:
+                except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
             elif word[0].strip() == 'use_lemma_infinit':
                 try:
                     vld.validate_bool_value(cns.BOOLEAN_STRINGS, word[1].strip())
                     vocab.use_lemma_infinit = (word[1].strip().lower() in cns.TRUTH_STRINGS)
-                except Exception as e:
+                except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
             elif word[0].strip() == 'use_order_text':
                 try:
                     vld.validate_bool_value(cns.BOOLEAN_STRINGS, word[1].strip())
                     vocab.use_order_text = (word[1].strip().lower() in cns.TRUTH_STRINGS)
-                except Exception as e:
+                except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
             elif word[0].strip() == 'use_folder_with_leading_exclamation_mark':
                 try:
@@ -69,7 +79,7 @@ def load_settings(vocab: vcb.VocabConfig) -> None:
                     try:
                         message = "The base directory has the leading exclamation mark, but the 'use_folder_with_leading_exclamation_mark' option is set to false:"
                         vld.validate_directory_with_leading_exclamation_mark(vocab.base_directory.name, vocab.use_folder_with_leading_exclamation_mark, message)
-                    except Exception as e:
+                    except exc.VocabError as e:
                         logger.warning(f"Warning: {e}")
-                except Exception as e:
+                except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")

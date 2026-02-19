@@ -1,5 +1,6 @@
 import logging
 from src.myvocab.utils.fetche_handler.fetcher import fetch
+from src.myvocab.constants import constants as cns
 
 logger = logging.getLogger(__name__)
 
@@ -8,10 +9,6 @@ logger = logging.getLogger(__name__)
 # https://yandex.cloud/en/docs/iam/operations/iam-token/create
 
 
-# Endpoint to exchange a code for a Yandex.OAuth token
-URI_IAM_TOKENS = 'https://iam.api.cloud.yandex.net/iam/v1/tokens'
-
-headers = {}
 data = {"yandexPassportOauthToken":"your_yandex_account"}
 
 def fetch_iam_oauth() -> dict:
@@ -20,6 +17,7 @@ def fetch_iam_oauth() -> dict:
     Returns:
         dict: JSON with the "iamToken" field
     """
+    headers = {}
 
     logger.info(f"Getting an IAM token for a Yandex account.")    
-    return fetch(url=URI_IAM_TOKENS, headers=headers, payload=data)
+    return fetch(url=cns.URI_IAM_TOKENS, headers=headers, payload=data)

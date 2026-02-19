@@ -3,6 +3,7 @@ from pathlib import Path
 import time
 import jwt
 import json
+from src.myvocab.constants import constants as cns
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +32,7 @@ def create_jwt(key_path: Path) -> str:
 
     now = int(time.time())
     payload = {
-            'aud': 'https://iam.api.cloud.yandex.net/iam/v1/tokens',
+            'aud': cns.URI_IAM_TOKENS,
             'iss': service_account_id,
             'iat': now,
             'exp': now + 3600
