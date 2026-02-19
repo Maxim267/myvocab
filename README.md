@@ -12,13 +12,13 @@ Please refer to the `doc/instructions` for instructions in Russian.
 
 ## Installing tools
 
-Installing Python ( >= 3.12, < 3.15):
+Installing Python and adding it to PATH ( >= 3.12, < 3.15):
 
     https://www.python.org/downloads/
 
 Installing pipx:
 
-    pip install --user pipx
+    pip install pipx
     pipx ensurepath
 
 Installing Poetry:
