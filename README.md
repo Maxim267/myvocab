@@ -12,38 +12,56 @@ Please refer to the `doc/instructions` for instructions in Russian.
 
 ## Installing tools
 
-Installing Python and adding it to PATH ( >= 3.12, < 3.15):
+### Installing Python:
+
+Install Python versions >= 3.12, < 3.15.
+
+Make sure to check the "Add Python to PATH" box during installation.
 
     https://www.python.org/downloads/
 
-Installing pipx:
+### Installing pipx:
 
-    pip install pipx
+    python -m pip install pipx
     pipx ensurepath
 
-Installing Poetry:
+### Installing Poetry:
 
     pipx install poetry
 
-Cloning the *myvocab* repository:
+### Cloning the *myvocab* repository:
 
     git clone https://github.com/Maxim267/myvocab.git
 
-Opening directory *myvocab*:
-
-Open the *myvocab* project in an IDE (e.g., PyCharm or VS Code).
-
-
 ## Installing myvocab
 
+### Open the *myvocab* project :
+
+Open the *myvocab* project in an IDE (e.g., VS Code or PyCharm).
+
+### Copy `.env`
 Copy `.env.example` to `.env` configuration file in the IDE integrated terminal:
 
     cp .env.example .env
 
-Create a .venv virtual environment in the project root.
+### Create a .venv virtual environment
+
+#### Find the executable path for a suitable Python version:
+
+Use the `py` launcher for Windows to see all installed versions. 
+
+    py --list-paths
+
+From the list, copy the path of a version that meets the requirements: >= 3.12 and < 3.15 (e.g., 'C:\Users\USER\AppData\Local\Programs\Python\Python314\python.exe')
+
+
+#### Create a .venv virtual environment:
+
 Use the `env use` command to tell Poetry which Python version to use for the current project:
 
-    poetry env use C:\full\path\to\python.exe
+    poetry env use C:\Users\USER\AppData\Local\Programs\Python\Python314\python.exe
+
+### Activate the .venv
 
 Display the .venv activation command:
 
@@ -53,13 +71,17 @@ Copy the path and activate the .venv:
 
     C:\full\path\to\myvocab\.venv\Scripts\activate.ps1
 
-Verify that the command line begins with (myvocab-pyx.xx)
+Verify that the command line begins with `(myvocab-pyX.XX)`
+
+### Install packages
 
 Install missing packages and remove unneeded ones:
 
     poetry sync
 
-To start the program, run the script:
+### Run the program
+
+Start the script:
 
     python myvocab.py
 
