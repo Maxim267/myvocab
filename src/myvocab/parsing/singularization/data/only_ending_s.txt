@@ -130,6 +130,7 @@ billiards
 binoculars
 biogas
 biomass
+bios
 biosynthesis
 bis
 bitterness
@@ -315,6 +316,7 @@ culottes
 cumulus
 cunnilingus
 curious
+cuss
 cybernetics
 cyclops
 cypress
@@ -368,7 +370,6 @@ distinctiveness
 distinctness
 distress
 dizziness
-does
 doldrums
 doubtless
 downstairs
@@ -552,6 +553,7 @@ grass-roots
 grassroots
 gratuitous
 gravitas
+grayness
 greatness
 greenness
 gregarious
@@ -610,6 +612,7 @@ highness
 hilarious
 hippocampus
 hippopotamus
+his
 hiss
 hoarseness
 holiness
@@ -753,6 +756,7 @@ luscious
 lustrous
 luxurious
 lysis
+macos
 macroeconomics
 madness
 madras
@@ -772,6 +776,7 @@ marquis
 marvellous
 mas
 mass
+massiveness
 masterclass
 mastitis
 mathematics
@@ -814,6 +819,8 @@ mistress
 mitosis
 modulus
 modus
+moistness
+molasses
 momentous
 monogamous
 monotonous
@@ -868,6 +875,7 @@ nightdress
 nimbus
 nitrous
 nonetheless
+nonluminous
 nothingness
 notorious
 nous
@@ -890,6 +898,7 @@ odorous
 oesophagitis
 oesophagus
 oestrus
+ohss
 ominous
 omnibus
 oneness
@@ -958,6 +967,7 @@ pervasiveness
 pes
 pettiness
 phallus
+phonemics
 phosphorus
 photolysis
 photosynthesis
@@ -1483,7 +1493,3 @@ yonks
 yours
 youthfulness
 zealous
-macos
-ohss
-bios
-phonemics

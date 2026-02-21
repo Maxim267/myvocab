@@ -1,7 +1,7 @@
 abate
+abbreviate
 abide
 abuse
-abbreviate
 accede
 accelerate
 accentuate
@@ -98,6 +98,7 @@ bite
 blame
 blaze
 boogie
+bore
 bottle
 bounce
 brace
@@ -107,12 +108,14 @@ breathe
 bribe
 bridge
 browse
+bruise
 bubble
 buckle
 budge
 bulge
 bundle
 bustle
+cache
 calculate
 camouflage
 capitalise
@@ -145,9 +148,8 @@ cleanse
 clone
 close
 clothe
-co-operate
-co-ordinate
 coalesce
+cockeye
 code
 coerce
 coincide
@@ -207,6 +209,7 @@ cope
 correlate
 countenance
 couple
+cradle
 crave
 create
 cringe
@@ -215,6 +218,7 @@ criticise
 criticize
 cruise
 crumble
+crystalize
 crystallize
 cuddle
 culminate
@@ -314,6 +318,7 @@ divine
 divorce
 divulge
 dodge
+dome
 dominate
 donate
 double
@@ -340,6 +345,7 @@ emphasize
 emulate
 enable
 encapsulate
+encircle
 enclose
 encode
 encourage
@@ -389,6 +395,7 @@ expose
 extradite
 extrapolate
 extricate
+eye
 face
 facilitate
 fade
@@ -403,6 +410,7 @@ file
 finalise
 finance
 fire
+flame
 flare
 flee
 fluctuate
@@ -427,6 +435,7 @@ generalise
 generalize
 generate
 germinate
+gesture
 giggle
 give
 glance
@@ -444,9 +453,11 @@ grate
 graze
 grease
 grieve
+grimace
 grumble
 guarantee
 guide
+gurgle
 haggle
 halve
 handle
@@ -465,6 +476,8 @@ hope
 house
 huddle
 humiliate
+hurtle
+hustle
 ignite
 ignore
 illuminate
@@ -472,6 +485,7 @@ illustrate
 imagine
 imitate
 immerse
+impale
 impede
 impinge
 impose
@@ -506,6 +520,7 @@ interface
 interfere
 intermediate
 intermingle
+interpose
 interrogate
 intervene
 intimate
@@ -525,6 +540,7 @@ issue
 jeopardise
 jeopardize
 joke
+jostle
 judge
 juggle
 jumble
@@ -603,6 +619,7 @@ notice
 nudge
 nurse
 nurture
+nuzzle
 oblige
 obliterate
 obscure
@@ -627,6 +644,7 @@ owe
 package
 paddle
 parade
+paralyze
 paraphrase
 partake
 participate
@@ -704,6 +722,7 @@ publicise
 publicize
 purchase
 purge
+purple
 pursue
 puzzle
 queue
@@ -720,10 +739,6 @@ rationalise
 rationalize
 rattle
 rave
-re-create
-re-emerge
-re-examine
-re-use
 realise
 realize
 rearrange
@@ -809,6 +824,7 @@ rise
 rotate
 rouse
 rue
+ruffle
 rule
 rummage
 sabotage
@@ -929,6 +945,7 @@ symbolise
 symbolize
 sympathise
 sympathize
+syndicate
 synthesise
 tackle
 take
@@ -943,6 +960,7 @@ thrive
 tickle
 tie
 time
+tiptoe
 tire
 title
 tolerate
@@ -1012,4 +1030,5 @@ wire
 wobble
 wrestle
 wriggle
+wrinkle
 write
