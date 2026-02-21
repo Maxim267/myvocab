@@ -11,7 +11,7 @@ from src.myvocab.parsing.commands.save_file import save_file
 
 logger = logging.getLogger(__name__)
 
-def validate_base_directory(base_path: Path):
+def validate_base_directory(base_path: Path) -> None:
     """ Validate base directory. """
 
     if base_path.is_file():
@@ -27,20 +27,20 @@ def validate_base_directory(base_path: Path):
         if base_path.is_relative_to(sys_dir):
             raise exc.DirectoryIsSystemRootError(base_path.resolve())
 
-def validate_file_name(reference_directory: Path, validate_filename: str):
+def validate_file_name(reference_directory: Path, validate_filename: str) -> None:
     """ Validate filename. """
 
     cur_path = Path.joinpath(reference_directory, validate_filename)
     if reference_directory != cur_path.parent:
         raise exc.FileNameIsNotFileError(validate_filename)
 
-def validate_bool_value(reference_bools: tuple, validate_bool: str):
+def validate_bool_value(reference_bools: tuple, validate_bool: str) -> None:
     """ Validate a boolean value. """
 
     if validate_bool.lower() not in reference_bools:
         raise exc.NonBooleanValueError(validate_bool)
 
-def validate_directory_with_leading_exclamation_mark(directory_path: Path | str, use_flag: bool, message: str = None):
+def validate_directory_with_leading_exclamation_mark(directory_path: Path | str, use_flag: bool, message: str = None) -> None:
     """ Validate that the directory path begins with "!". """
 
     if not use_flag:
@@ -57,9 +57,16 @@ def validate_directory_with_leading_exclamation_mark(directory_path: Path | str,
                 raise exc.DirectoryExclamationMarkError(directory_path, message)
 
 def validate_target_language_code(target_language_code: str, target_languages_file: Path) -> tuple:
-    """ Validate the target language. """
+    """ Validate the target language.
 
-    def create_target_languages_file(trg_languages_file: Path):
+    Args:
+        target_language_code (str): Target language code
+        target_languages_file (Path): Target languages file
+    Returns:
+        tuple: Target language code and name.
+    """
+
+    def create_target_languages_file(trg_languages_file: Path) -> None:
         """ Create the target language file. """
         fetch_data = fetch_iam_func()
         if iam_token := fetch_data.get("access_token"):

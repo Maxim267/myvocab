@@ -41,6 +41,8 @@ def main(base_directory: Path, level: str):
 
 if __name__ == '__main__':
 
+    # The script accepts arguments in any order
+    # The path argument can contain spaces
     index_d = None
     start_dir = ""
     for ind, arg in enumerate(sys.argv[1:]):
