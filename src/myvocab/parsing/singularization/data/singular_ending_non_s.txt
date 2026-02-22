@@ -32,6 +32,7 @@ house
 housewife
 huswife
 incentive
+initialize
 involve
 jackknife
 knife
@@ -57,8 +58,10 @@ pouffe
 puddingwife
 purpose
 rechauffe
+release
 reprefe
 repriefe
+revolve
 ruffe
 safe
 seawife
@@ -67,6 +70,7 @@ size
 spaewife
 strafe
 strife
+summarize
 tartufe
 tartuffe
 teneriffe

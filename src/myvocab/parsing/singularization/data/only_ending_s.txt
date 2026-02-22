@@ -33,7 +33,6 @@ alas
 albatross
 alertness
 alias
-all-comers
 allsorts
 alms
 aloneness
@@ -59,8 +58,8 @@ anastomosis
 animus
 anomalous
 anonymous
-anti-virus
 antithesis
+antivirus
 anus
 anxious
 apodosis
@@ -120,9 +119,7 @@ basis
 bass
 bathos
 battledress
-beaux-arts
 bedclothes
-behind-the-scenes
 belongings
 besides
 bias
@@ -144,7 +141,6 @@ bless
 blindness
 bliss
 bloodless
-bloody-mindedness
 blueness
 bluntness
 bogus
@@ -229,6 +225,7 @@ cholangitis
 cholecystitis
 cholestasis
 chorus
+chris
 chrysalis
 circuitous
 circus
@@ -291,7 +288,6 @@ corpus
 correctness
 corydoras
 cosiness
-cost-effectiveness
 countess
 countless
 courageous
@@ -307,7 +303,6 @@ cress
 cretaceous
 crisis
 crispness
-criss-cross
 crocus
 cross
 crossroads
@@ -371,6 +366,7 @@ distinctness
 distress
 dizziness
 doldrums
+dos
 doubtless
 downstairs
 downwards
@@ -442,7 +438,6 @@ express
 expressionless
 expressiveness
 extraneous
-eye-witness
 eyewitness
 fabulous
 faceless
@@ -454,7 +449,6 @@ faithfulness
 fallacious
 falseness
 famous
-fancy-dress
 fastidious
 fastidiousness
 fastness
@@ -477,7 +471,6 @@ fierceness
 financials
 fineness
 firmness
-first-class
 fitness
 flatness
 flawless
@@ -496,7 +489,6 @@ fortress
 fortuitous
 foss
 foulness
-four-fifths
 fracas
 fractious
 francais
@@ -520,6 +512,7 @@ gasworks
 gauss
 generous
 genesis
+genetics
 genius
 gentleness
 genuineness
@@ -549,7 +542,6 @@ graciousness
 gramps
 grampus
 grass
-grass-roots
 grassroots
 gratuitous
 gravitas
@@ -582,7 +574,6 @@ harris
 harshness
 has
 hastings
-have-nots
 haves
 hazardous
 headdress
@@ -606,8 +597,6 @@ heterogeneous
 hiatus
 hibiscus
 hideous
-high-class
-high-pass
 highness
 hilarious
 hippocampus
@@ -738,7 +727,6 @@ locus
 loess
 lomas
 loneliness
-looking-glass
 looseness
 loss
 lotus
@@ -746,7 +734,6 @@ loudness
 louis
 loveless
 loveliness
-low-pass
 luckless
 ludicrous
 lugubrious
@@ -794,7 +781,6 @@ meiosis
 meningitis
 merciless
 mess
-meta-analysis
 metamorphosis
 metastasis
 methanogenesis
@@ -802,10 +788,10 @@ meticulous
 metropolis
 microdialysis
 microeconomics
-middle-class
 mildness
 mimesis
 mindedness
+mindfulness
 mindless
 minibus
 minus
@@ -919,10 +905,8 @@ otherness
 otitis
 ours
 ourselves
-out-of-doors
 outrageous
 outskirts
-over-zealous
 overseas
 paediatrics
 painless
@@ -1098,6 +1082,7 @@ responsiveness
 restless
 restlessness
 retinitis
+reynolds
 rhesus
 rhinitis
 rhinoceros
@@ -1115,6 +1100,7 @@ riotous
 ripeness
 riskiness
 riskless
+robbins
 robustness
 ross
 roughness
@@ -1145,17 +1131,9 @@ seamless
 seamstress
 seasickness
 secateurs
-second-class
 seditious
-self-analysis
-self-awareness
-self-conscious
-self-consciousness
-self-righteous
-self-righteousness
 selfishness
 selfless
-semi-darkness
 senseless
 sensuous
 separateness
@@ -1172,7 +1150,6 @@ shapeless
 sharpness
 sheerness
 shepherdess
-short-sightedness
 shortness
 shorts
 showbusiness
@@ -1183,7 +1160,6 @@ siemens
 silliness
 simultaneous
 sinfulness
-single-mindedness
 singleness
 sinuous
 sinus
@@ -1288,11 +1264,8 @@ tallis
 tamas
 tardis
 tarsus
-tas
 tass
 tasteless
-tbs
-tear-gas
 teargas
 tectonics
 tedious
@@ -1345,7 +1318,6 @@ togetherness
 tongs
 tonsillitis
 toothless
-top-class
 topless
 tortuous
 torus
@@ -1373,8 +1345,6 @@ tuberculosis
 tumultuous
 turps
 tweezers
-two-fifths
-two-thirds
 typhus
 tyrannosaurus
 ubiquitous
@@ -1407,7 +1377,6 @@ unsteadiness
 untidiness
 unwillingness
 unworthiness
-upper-class
 upstairs
 upwards
 urethritis
@@ -1439,7 +1408,6 @@ villus
 vindictiveness
 virtuous
 virus
-vis-a-vis
 viscountess
 viscous
 vivacious
@@ -1449,7 +1417,6 @@ voiceless
 voluminous
 voluptuous
 voracious
-vs
 waitress
 wakefulness
 walrus
@@ -1479,9 +1446,6 @@ wistfulness
 witness
 wondrous
 wordless
-working-class
-world-class
-world-famous
 worldliness
 worthiness
 worthless

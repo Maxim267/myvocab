@@ -260,6 +260,7 @@ denigrate
 denote
 denounce
 deplore
+deprecate
 deprive
 derive
 describe
@@ -506,6 +507,7 @@ inflate
 influence
 infringe
 inhale
+initialize
 initiate
 injure
 innovate
@@ -568,6 +570,7 @@ lure
 machine
 make
 manage
+mangle
 manipulate
 manoeuvre
 manufacture
@@ -990,6 +993,7 @@ underline
 undermine
 undertake
 underwrite
+uninitialize
 unite
 unsettle
 untie

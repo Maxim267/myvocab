@@ -5,9 +5,12 @@ block_cipher = None
 
 
 a = Analysis(['myvocab.py'],
-             pathex=['C:\\wrk\\Python\\VSC\\myvocab'],
+             pathex=[],
              binaries=[],
-             datas=[('.env', '.'), ('src/myvocab/parsing/infinitive/data', 'src/myvocab/parsing/infinitive/data'), ('src/myvocab/parsing/singularization/data', 'src/myvocab/parsing/singularization/data')],
+             datas=[
+                ('.env', '.'),
+                ('src/myvocab/parsing/infinitive/data', 'src/myvocab/parsing/infinitive/data'),
+                ('src/myvocab/parsing/singularization/data', 'src/myvocab/parsing/singularization/data')],
              hiddenimports=[],
              hookspath=[],
              hooksconfig={},
