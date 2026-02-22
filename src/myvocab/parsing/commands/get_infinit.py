@@ -49,7 +49,6 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
             "word": cur_word,
             "pair": ""
         }
-
     # It requires a verb ending in '-ed'
     elif verb_e_d := re.findall(r'((.+)e)d\b', cur_word):
         # Searching for a verb ending in '-e' in the set
@@ -60,11 +59,21 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
                 "word": val,
                 "pair": "" if cur_word == val else f"{cur_word} - {val}"
             }
+
+        # Searching for a verb not ending in '-ed' and its base form ending in '-s' in the set
+        elif verb_e_d[0][1][-1:] == 's' and verb_e_d[0][1] in vocab.singular.only_ending_s:
+            val = verb_e_d[0][1]
+            cur_data = {
+                "id": 1060,
+                "word": val,
+                "pair": "" if cur_word == val else f"{cur_word} - {val}"
+            }
+
         # Searching for a verb not ending in '-ed' in the set
         elif verb_e_d[0][1] in vocab.infinit.verbs_ending_non_ed:
             val = verb_e_d[0][1]
             cur_data = {
-                "id": 1060,
+                "id": 1070,
                 "word": val,
                 "pair": "" if cur_word == val else f"{cur_word} - {val}"
             }
@@ -89,7 +98,7 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
                 # removes the '-ed' ending and reduce any double consonants
                 val = verb_2consonants_ed.group()[:verb_2consonants_ed.end() - 3]
                 cur_data = {
-                    "id": 1070,
+                    "id": 1080,
                     "word": val,
                     "pair": "" if cur_word == val else f"{cur_word} - {val}"
                 }
@@ -98,7 +107,7 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
                 # removes the '-ed' ending and replaces 'i' with 'y'
                 val = verb_ied[0] + "y"
                 cur_data = {
-                    "id": 1080,
+                    "id": 1090,
                     "word": val,
                     "pair": "" if cur_word == val else f"{cur_word} - {val}"
                 }
@@ -107,7 +116,7 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
                 # removes the '-ed' ending
                 val = verb_xed[0]
                 cur_data = {
-                    "id": 1090,
+                    "id": 1100,
                     "word": val,
                     "pair": "" if cur_word == val else f"{cur_word} - {val}"
                 }
@@ -116,7 +125,7 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
                 # removes the '-ked' ending
                 val = verb_ic_ked[0]
                 cur_data = {
-                    "id": 1100,
+                    "id": 1110,
                     "word": val,
                     "pair": "" if cur_word == val else f"{cur_word} - {val}"
                 }
@@ -125,7 +134,7 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
                 # removes the '-ed' ending
                 val = verb_e_d[0][1]
                 cur_data = {
-                    "id": 1110,
+                    "id": 1120,
                     "word": val,
                     "pair": "" if cur_word == val else f"{cur_word} - {val}"
                 }
