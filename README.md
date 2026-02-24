@@ -37,10 +37,10 @@ Make sure to check the "Add Python to PATH" box during installation.
 
 ### Open the *myvocab* project :
 
-Open the *myvocab* project in an IDE (e.g., VS Code or PyCharm).
+Open the *myvocab* project in your IDE (e.g., VS Code or PyCharm) or `cd` into the *myvocab* directory via command line.
 
 ### Copy `.env`
-Copy `.env.example` to `.env` configuration file in the IDE integrated terminal:
+Copy the `.env.example` file to `.env` using the integrated terminal or command line:
 
     cp .env.example .env
 
@@ -107,7 +107,7 @@ The last log line shows the `myvocab.exe` output path:
 
     INFO: Build complete! The results are available in: C:\full\path\to\myvocab\dist
 
-To launch the program, double-click the executable or run the scripts:
+To launch the program, double-click the executable or run it from the command line:
 
     myvocab.exe
     myvocab.exe -D

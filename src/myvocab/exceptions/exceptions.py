@@ -61,7 +61,7 @@ class DirectoryIsNotFolderError(VocabError):
     def __str__(self) -> str:
         return f"{self.message} '{self.directory}'"
 
-class FileNameIsNotFileError(VocabError):
+class FileNameIsInvalidError(VocabError):
     """ Raised when a filename is invalid. """
     def __init__(self, directory, message="Invalid filename:"):
         self.directory = directory
@@ -70,6 +70,16 @@ class FileNameIsNotFileError(VocabError):
 
     def __str__(self) -> str:
         return f"{self.message} '{self.directory}'"
+
+class FileNameAlreadyUseError(VocabError):
+    """ Raised when the filename is already in use. """
+    def __init__(self, file, message="The filename is already in use:"):
+        self.file = file
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f"{self.message} '{self.file}'"
 
 class NonBooleanValueError(VocabError):
     """ Raised when a value is not of type boolean. """

@@ -56,9 +56,10 @@ def write_directories(vocab: vcb.VocabConfig):
         # If the PyInstaller executable sets the base directory to '.'
         if level == 0 and dirpath.name == '':
             cur_list = re.split(r'[\\/]', str(vocab.base_directory.resolve()))
-            new_lines.append(f'{indent}{mark_folder} {cur_list[len(cur_list) - 1]}/')
+            dirpath_name = cur_list[len(cur_list) - 1]
         else:
-            new_lines.append(f'{indent}{mark_folder} {dirpath.name}/')
+            dirpath_name = dirpath.name
+        new_lines.append(f'{indent}{mark_folder} {dirpath_name}/')
         
         # Increase the indentation level by 1 for all files in the current folder
         sub_indent = ' ' * 4 * (level + 1)
@@ -69,11 +70,11 @@ def write_directories(vocab: vcb.VocabConfig):
             # Text files only
             if not file.endswith(".txt"):
                 continue
-         
+
             try:
-                # The current filename has the leading exclamation mark and the 'use_folder_with_leading_exclamation_mark' option is set to false
+                # The current filename has the leading exclamation mark and the 'use_dir_with_leading_exclamation_mark' option is set to false
                 cur_path = Path.joinpath(dirpath_parts, file)
-                vld.validate_directory_with_leading_exclamation_mark(cur_path, vocab.use_folder_with_leading_exclamation_mark)
+                vld.validate_directory_with_leading_exclamation_mark(cur_path, vocab.use_dir_with_leading_exclamation_mark)
             except exc.VocabError:
                 continue
 

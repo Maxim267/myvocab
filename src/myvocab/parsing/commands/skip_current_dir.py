@@ -16,8 +16,8 @@ def skip_current_dir(vocab: vcb.VocabConfig, current_dir_path: Path, partial_pat
    """
 
    try:
-      # Ignore current directory prefixed with '!' if 'use_folder_with_leading_exclamation_mark' flag is unset
-      vld.validate_directory_with_leading_exclamation_mark(partial_path, vocab.use_folder_with_leading_exclamation_mark)
+      # Ignore current directory prefixed with '!' if 'use_dir_with_leading_exclamation_mark' flag is unset
+      vld.validate_directory_with_leading_exclamation_mark(partial_path, vocab.use_dir_with_leading_exclamation_mark)
    except exc.VocabError:
       return True
 

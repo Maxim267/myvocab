@@ -27,12 +27,18 @@ def validate_base_directory(base_path: Path) -> None:
         if base_path.is_relative_to(sys_dir):
             raise exc.DirectoryIsSystemRootError(base_path.resolve())
 
-def validate_file_name(reference_directory: Path, validate_filename: str) -> None:
-    """ Validate filename. """
+def validate_filename_format(reference_directory: Path, validate_filename: str) -> None:
+    """ Validate filename format. """
 
     cur_path = Path.joinpath(reference_directory, validate_filename)
     if reference_directory != cur_path.parent:
-        raise exc.FileNameIsNotFileError(validate_filename)
+        raise exc.FileNameIsInvalidError(validate_filename)
+
+def validate_file_name_unique(validate_filename_one: str, validate_filename_two: str) -> None:
+    """ Validate that the filename is unique. """
+
+    if validate_filename_one == validate_filename_two:
+        raise exc.FileNameAlreadyUseError(validate_filename_one)
 
 def validate_bool_value(reference_bools: tuple, validate_bool: str) -> None:
     """ Validate a boolean value. """

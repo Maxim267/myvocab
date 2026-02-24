@@ -53,7 +53,7 @@ class VocabConfig:
     # Flag to enable ordering in the result vocabulary file
     use_order_text: bool = True
     # Flag to enable processing files and folders starting with "!"
-    use_folder_with_leading_exclamation_mark: bool = False
+    use_dir_with_leading_exclamation_mark: bool = False
 
     @property
     def dir_unique_id(self):
@@ -188,7 +188,7 @@ class VocabConfig:
         f"use_word_translate = {self.use_word_translate}\n"
         f"target_language = {self.target_language}\n"
         f"use_order_text = {self.use_order_text}\n"
-        f"use_folder_with_leading_exclamation_mark = {self.use_folder_with_leading_exclamation_mark}\n"
+        f"use_dir_with_leading_exclamation_mark = {self.use_dir_with_leading_exclamation_mark}\n"
         f"{"" if self.singular is None else f"{self.singular}"}"
         f"{"" if self.infinit is None else f"{self.infinit}"}"
         f"{'-'*40}\n"

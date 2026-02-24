@@ -150,9 +150,9 @@ def render_vocab(base_path: Path):
             continue
 
          try:
-            # Ignore files prefixed with '!' if 'use_folder_with_leading_exclamation_mark' flag is unset
+            # Ignore files prefixed with '!' if 'use_dir_with_leading_exclamation_mark' flag is unset
             join_path = Path.joinpath(dirpath_parts, filename)
-            vld.validate_directory_with_leading_exclamation_mark(join_path, vocab.use_folder_with_leading_exclamation_mark)
+            vld.validate_directory_with_leading_exclamation_mark(join_path, vocab.use_dir_with_leading_exclamation_mark)
          except exc.VocabError:
             continue
 
