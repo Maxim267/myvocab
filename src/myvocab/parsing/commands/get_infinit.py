@@ -91,8 +91,8 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
                     # It requires a verb ending in '-xed'
                     verb_xed = re.findall(r'(.+x)ed\b', cur_word)
                     if not verb_xed:
-                        # It requires a verb ending in '-icked'
-                        verb_ic_ked = re.findall(r'(.+ic)ked\b', cur_word)
+                        # It requires a verb ending in '-icked' or vowel + '-acked'
+                        verb_ic_ked = re.findall(r'(.+(?:ic|[aeiouy]ac))ked\b', cur_word)
             # It requires a verb ending in '2 consonants + ed'
             if verb_2consonants_ed:
                 # removes the '-ed' ending and reduce any double consonants
