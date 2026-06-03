@@ -45,8 +45,10 @@ def translate(iam: str, words: list, target_language_code: str, result_directory
         chunk_index = 0
 
         # Map has two modes, depending on whether caching is used for translations:
+        # Caching is used
         # 1: word -> list of all global indices of the word
-        # 2: chunk index -> current global index of the word
+        # Caching is not used
+        # 2: chunk_index -> current global index of the word
         chunk_map = dict()
 
         chunk_num += 1
