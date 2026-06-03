@@ -224,12 +224,15 @@ def render_vocab(base_path: Path):
 
                      # if the word contains a hyphen
                      is_multi = False
-                     multi_words = re.split(r'-', word)
-                     if len(multi_words) > 1:
-                        for m_word in multi_words:
-                           if m_word != "":
-                              is_multi = True
-                              break
+                     # Skip hyphenated compound processing?
+                     if word not in vocab.infinit.only_ending_ed and word not in vocab.singular.only_ending_s:
+                        multi_words = re.split(r'-', word)
+                        if len(multi_words) > 1:
+                           for m_word in multi_words:
+                              if m_word != "":
+                                 # Enable hyphenated compound processing
+                                 is_multi = True
+                                 break
                      # Hyphenated compound
                      if is_multi:
                         phrase = ""
