@@ -17,5 +17,6 @@ phenomenon phenomena
 quiz quizzes
 referendum referenda/referendums
 schema schemata/schemas
+summons summonses
 thesis theses
 woman women
