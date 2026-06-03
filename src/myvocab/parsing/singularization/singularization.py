@@ -2,6 +2,7 @@ from pathlib import Path
 from src.myvocab.parsing.singularization.data import path_file
 from src.myvocab.parsing.commands.get_file_unique_lines import get_file_unique_lines
 from src.myvocab.parsing.commands.save_file import save_file
+from src.myvocab.parsing.commands.save_file_merge import save_file_merge
 from src.myvocab.parsing.commands.get_v_tuple import get_v2
 
 class SingularAttrib:
@@ -153,15 +154,23 @@ class SingularAttrib:
         if not self.singular_ending_non_s_path.is_file():
             cur_set = get_file_unique_lines(self.__data_singular_ending_non_s_path)
             save_file(self.singular_ending_non_s_path, list(cur_set), True)
+        else:
+            save_file_merge(self.singular_ending_non_s_path, self.__data_singular_ending_non_s_path)
 
         if not self.only_ending_s_path.is_file():
             cur_set = get_file_unique_lines(self.__data_only_ending_s_path)
             save_file(self.only_ending_s_path, list(cur_set), True)
+        else:
+            save_file_merge(self.only_ending_s_path, self.__data_only_ending_s_path)
 
         if not self.irregular_plural_nouns_path.is_file():
             cur_set = get_file_unique_lines(self.__data_irregular_plural_nouns_path)
             save_file(self.irregular_plural_nouns_path, list(cur_set), True)
+        else:
+            save_file_merge(self.irregular_plural_nouns_path, self.__data_irregular_plural_nouns_path)
 
         if not self.reviewed_pairs_path.is_file():
             cur_set = get_file_unique_lines(self.__data_reviewed_pairs_path)
             save_file(self.reviewed_pairs_path, list(cur_set), True)
+        else:
+            save_file_merge(self.reviewed_pairs_path, self.__data_reviewed_pairs_path)

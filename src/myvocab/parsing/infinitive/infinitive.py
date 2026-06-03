@@ -3,6 +3,7 @@ import logging
 from src.myvocab.parsing.infinitive.data import path_file
 from src.myvocab.parsing.commands.get_file_unique_lines import get_file_unique_lines
 from src.myvocab.parsing.commands.save_file import save_file
+from src.myvocab.parsing.commands.save_file_merge import save_file_merge
 from src.myvocab.parsing.commands.get_v_tuple import get_v3
 from src.myvocab.parsing.commands.get_v_tuple import get_v2
 from src.myvocab.parsing.commands.get_v_tuple import get_v1
@@ -227,19 +228,29 @@ class InfinitAttrib:
         if not self.irregular_verbs_path.is_file():
             cur_set = get_file_unique_lines(self.__data_irregular_verbs_path)
             save_file(self.irregular_verbs_path, list(cur_set), True)
+        else:
+            save_file_merge(self.irregular_verbs_path, self.__data_irregular_verbs_path)
 
         if not self.reviewed_pairs_path.is_file():
             cur_set = get_file_unique_lines(self.__data_reviewed_pairs_path)
             save_file(self.reviewed_pairs_path, list(cur_set), True)
+        else:
+            save_file_merge(self.reviewed_pairs_path, self.__data_reviewed_pairs_path)
 
         if not self.only_ending_ed_path.is_file():
             cur_set = get_file_unique_lines(self.__data_only_ending_ed_path)
             save_file(self.only_ending_ed_path, list(cur_set), True)
+        else:
+            save_file_merge(self.only_ending_ed_path, self.__data_only_ending_ed_path)
 
         if not self.verbs_ending_e_path.is_file():
             cur_set = get_file_unique_lines(self.__data_verbs_ending_e_path)
             save_file(self.verbs_ending_e_path, list(cur_set), True)
+        else:
+            save_file_merge(self.verbs_ending_e_path, self.__data_verbs_ending_e_path)
 
         if not self.verbs_ending_non_ed_path.is_file():
             cur_set = get_file_unique_lines(self.__data_verbs_ending_non_ed_path)
             save_file(self.verbs_ending_non_ed_path, list(cur_set), True)
+        else:
+            save_file_merge(self.verbs_ending_non_ed_path, self.__data_verbs_ending_non_ed_path)

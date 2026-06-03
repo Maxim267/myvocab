@@ -11,15 +11,16 @@ def diff_two_files(base_path: Path, compared_path: Path) -> list:
         list: Different lines
     """
 
-    base_file = get_file_unique_lines(base_path)
-    compared_file = get_file_unique_lines(compared_path)
-    differ_lines = set()
-    for base in base_file:
-        is_no_checked = True
-        for compare in compared_file:
-            if base == compare:
-                is_no_checked = False
-                break
-        if is_no_checked:
-            differ_lines.add(base)
-    return list(differ_lines)
+    base_set = get_file_unique_lines(base_path)
+    compared_set = get_file_unique_lines(compared_path)
+    return_set = set()
+
+    if base_set and not compared_set:
+        return list(base_set)
+    elif base_set and compared_set:
+        for base_item in base_set:
+            if base_item not in compared_set:
+                # If the base_item is in base_file but not in compared_file
+                return_set.add(base_item)
+
+    return list(return_set)

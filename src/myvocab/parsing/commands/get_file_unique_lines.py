@@ -12,9 +12,9 @@ def get_file_unique_lines(file_path: Path) -> set:
     """
 
     if not file_path.exists():
-        raise exc.DirectoryNotExistError(file_path.resolve())
+        return set()
     if file_path.is_dir():
-        raise exc.DirectoryIsNotFileError(file_path.resolve())   
+        raise exc.DirectoryIsNotFileError(file_path.resolve())
 
     line_set = set()
     with open(file_path, 'r', encoding='utf-8') as f:
