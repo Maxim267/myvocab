@@ -17,13 +17,14 @@ class SingularAttrib:
     __irregular_plural_nouns: dict = None
     __reviewed_pairs: dict = None
 
-    def __init__(self, dir_unique_id: str):
+    def __init__(self, dir_unique_id: str, is_init: bool = True):
         """ Initialize the `Singular transformation configuration`.
         Args:
             dir_unique_id (str): Unique base directory.
         """
         self.__dir_unique_id = dir_unique_id
-        self.initialize()
+        if is_init:
+            self.initialize()
 
     # Singularization 
     __home = Path.home()
@@ -155,22 +156,22 @@ class SingularAttrib:
             cur_set = get_file_unique_lines(self.__data_singular_ending_non_s_path)
             save_file(self.singular_ending_non_s_path, list(cur_set), True)
         else:
-            save_file_merge(self.singular_ending_non_s_path, self.__data_singular_ending_non_s_path)
+            save_file_merge(self.singular_ending_non_s_path, self.__data_singular_ending_non_s_path, True)
 
         if not self.only_ending_s_path.is_file():
             cur_set = get_file_unique_lines(self.__data_only_ending_s_path)
             save_file(self.only_ending_s_path, list(cur_set), True)
         else:
-            save_file_merge(self.only_ending_s_path, self.__data_only_ending_s_path)
+            save_file_merge(self.only_ending_s_path, self.__data_only_ending_s_path, True)
 
         if not self.irregular_plural_nouns_path.is_file():
             cur_set = get_file_unique_lines(self.__data_irregular_plural_nouns_path)
             save_file(self.irregular_plural_nouns_path, list(cur_set), True)
         else:
-            save_file_merge(self.irregular_plural_nouns_path, self.__data_irregular_plural_nouns_path)
+            save_file_merge(self.irregular_plural_nouns_path, self.__data_irregular_plural_nouns_path, True)
 
         if not self.reviewed_pairs_path.is_file():
             cur_set = get_file_unique_lines(self.__data_reviewed_pairs_path)
             save_file(self.reviewed_pairs_path, list(cur_set), True)
         else:
-            save_file_merge(self.reviewed_pairs_path, self.__data_reviewed_pairs_path)
+            save_file_merge(self.reviewed_pairs_path, self.__data_reviewed_pairs_path, True)

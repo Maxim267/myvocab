@@ -121,14 +121,14 @@ def translate(iam: str, words: list, target_language_code: str, result_directory
                 if not translate_path.exists():
                     translate_path.mkdir(exist_ok=True, parents=True)
             if logger.getEffectiveLevel() == logging.DEBUG:
-                save_file(Path.joinpath(translate_path, f"{chunk_num} chunk sent for translation.txt"), chunk, False)
+                save_file(Path.joinpath(translate_path, f"chunk{chunk_num}_sent_to_API.txt"), chunk, False)
 
             # Translate the chunk list
             fetch_data = fetch_translate(iam, chunk, target_language_code)
 
             # Save incoming chunk if log level is DEBUG
             if logger.getEffectiveLevel() == logging.DEBUG:
-                Path(translate_path, f"{chunk_num} chunk received from the API.txt").write_text(data=f"{fetch_data}", encoding='utf-8')
+                Path(translate_path, f"chunk{chunk_num}_received_from_API.txt").write_text(data=f"{fetch_data}", encoding='utf-8')
 
             if fetch_data["ok"]:
                 logger.info(f"{chunk_num}: Translation complete.")

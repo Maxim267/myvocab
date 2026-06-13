@@ -68,6 +68,12 @@ def load_settings(vocab: vcb.VocabConfig) -> None:
                     vocab.use_lemma_infinit = (word[1].strip().lower() in cns.TRUTH_STRINGS)
                 except exc.VocabError as e:
                     logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
+            elif word[0].strip() == 'use_lemma_casing':
+                try:
+                    vld.validate_bool_value(cns.BOOLEAN_STRINGS, word[1].strip())
+                    vocab.use_lemma_casing = (word[1].strip().lower() in cns.TRUTH_STRINGS)
+                except exc.VocabError as e:
+                    logger.warning(f"Invalid processing option '{word[0].strip()}': {e}")
             elif word[0].strip() == 'use_order_text':
                 try:
                     vld.validate_bool_value(cns.BOOLEAN_STRINGS, word[1].strip())

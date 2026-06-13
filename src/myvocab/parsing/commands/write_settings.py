@@ -22,6 +22,7 @@ def write_settings(vocab: vcb.VocabConfig) -> None:
                 f"directories_file = {vocab.directories_file.name}\n"
                 f"use_lemma_singular = {vocab.use_lemma_singular}\n"
                 f"use_lemma_infinit = {vocab.use_lemma_infinit}\n"
+                f"use_lemma_casing = {vocab.use_lemma_casing}\n"
                 f"use_word_translate = {vocab.use_word_translate}\n"
                 f"target_language_code = {vocab.target_language_code}\n"
                 f"use_order_text = {vocab.use_order_text}\n"

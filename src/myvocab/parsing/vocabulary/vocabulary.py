@@ -1,6 +1,7 @@
 from pathlib import Path
 from src.myvocab.parsing.singularization import singularization as sng
 from src.myvocab.parsing.infinitive import infinitive as inf
+from src.myvocab.parsing.casing import casing as csn
 from src.myvocab.validators import validators as vld
 from src.myvocab.utils.logging_handler.set_file_handler import set_file_handler
 
@@ -13,6 +14,7 @@ class VocabConfig:
 
     __singular: sng.SingularAttrib = None
     __infinit: inf.InfinitAttrib = None
+    __casing: csn.CasingAttrib = None
     __verbs_ending_s = set()
 
     def __init__(self, base_path: Path):
@@ -48,6 +50,8 @@ class VocabConfig:
     use_lemma_singular: bool = True
     # Flag to enable infinitive transformation
     use_lemma_infinit: bool = True
+    # Flag to enable casing transformation
+    use_lemma_casing: bool = False
     # Flag to enable translation
     use_word_translate: bool = False
     # Flag to enable ordering in the result vocabulary file
@@ -145,18 +149,27 @@ class VocabConfig:
         """ Get the Singular transformation configuration. """
         return self.__singular
 
-    def set_singular(self) -> None:
+    def set_singular(self, is_init: bool = True) -> None:
         """ Create a singular-transformer. """
-        self.__singular = sng.SingularAttrib(self.dir_unique_id)
+        self.__singular = sng.SingularAttrib(self.dir_unique_id, is_init)
 
     @property
     def infinit(self):
         """ Get the Infinitive transformation configuration. """
         return self.__infinit
 
-    def set_infinitive(self) -> None:
+    def set_infinitive(self, is_init: bool = True) -> None:
         """ Create an infinitive-transformer. """
-        self.__infinit = inf.InfinitAttrib(self.dir_unique_id)
+        self.__infinit = inf.InfinitAttrib(self.dir_unique_id, is_init)
+
+    @property
+    def casing(self):
+        """ Get the Casing transformation configuration. """
+        return self.__casing
+
+    def set_casing(self, is_init: bool = True) -> None:
+        """ Create a casing-transformer. """
+        self.__casing = csn.CasingAttrib(self.dir_unique_id, is_init)
 
     @property
     def verbs_ending_s(self) -> set:
@@ -185,12 +198,14 @@ class VocabConfig:
         f"log_file = {self.log_file}\n"
         f"use_lemma_singular = {self.use_lemma_singular}\n"
         f"use_lemma_infinit = {self.use_lemma_infinit}\n"
+        f"use_lemma_casing = {self.use_lemma_casing}\n"
         f"use_word_translate = {self.use_word_translate}\n"
         f"target_language = {self.target_language}\n"
         f"use_order_text = {self.use_order_text}\n"
         f"use_dir_with_leading_exclamation_mark = {self.use_dir_with_leading_exclamation_mark}\n"
         f"{"" if self.singular is None else f"{self.singular}"}"
         f"{"" if self.infinit is None else f"{self.infinit}"}"
+        f"{"" if self.casing is None else f"{self.casing}"}"
         f"{'-'*40}\n"
         )
         return cur_str
@@ -207,5 +222,6 @@ class VocabConfig:
         f"{str(self.log_file.resolve())}\n"
         f"{"" if self.singular is None else f"{self.singular.str_path()}"}"
         f"{"" if self.infinit is None else f"{self.infinit.str_path()}"}"
+        f"{"" if self.casing is None else f"{self.casing.str_path()}"}"
         )
         return cur_str

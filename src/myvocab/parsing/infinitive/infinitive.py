@@ -25,13 +25,14 @@ class InfinitAttrib:
     __verbs_ending_e: set = None
     __verbs_ending_non_ed: set = None
 
-    def __init__(self, dir_unique_id: str):
+    def __init__(self, dir_unique_id: str, is_init: bool = True):
         """ Initialize the `Infinitive transformation configuration`.
         Args:
             dir_unique_id (str): Unique base directory.
         """
         self.__dir_unique_id = dir_unique_id
-        self.initialize()
+        if is_init:
+            self.initialize()
 
     @classmethod
     def infinit_attrib_verbs_ending_s(cls) -> set:
@@ -229,28 +230,28 @@ class InfinitAttrib:
             cur_set = get_file_unique_lines(self.__data_irregular_verbs_path)
             save_file(self.irregular_verbs_path, list(cur_set), True)
         else:
-            save_file_merge(self.irregular_verbs_path, self.__data_irregular_verbs_path)
+            save_file_merge(self.irregular_verbs_path, self.__data_irregular_verbs_path, True)
 
         if not self.reviewed_pairs_path.is_file():
             cur_set = get_file_unique_lines(self.__data_reviewed_pairs_path)
             save_file(self.reviewed_pairs_path, list(cur_set), True)
         else:
-            save_file_merge(self.reviewed_pairs_path, self.__data_reviewed_pairs_path)
+            save_file_merge(self.reviewed_pairs_path, self.__data_reviewed_pairs_path, True)
 
         if not self.only_ending_ed_path.is_file():
             cur_set = get_file_unique_lines(self.__data_only_ending_ed_path)
             save_file(self.only_ending_ed_path, list(cur_set), True)
         else:
-            save_file_merge(self.only_ending_ed_path, self.__data_only_ending_ed_path)
+            save_file_merge(self.only_ending_ed_path, self.__data_only_ending_ed_path, True)
 
         if not self.verbs_ending_e_path.is_file():
             cur_set = get_file_unique_lines(self.__data_verbs_ending_e_path)
             save_file(self.verbs_ending_e_path, list(cur_set), True)
         else:
-            save_file_merge(self.verbs_ending_e_path, self.__data_verbs_ending_e_path)
+            save_file_merge(self.verbs_ending_e_path, self.__data_verbs_ending_e_path, True)
 
         if not self.verbs_ending_non_ed_path.is_file():
             cur_set = get_file_unique_lines(self.__data_verbs_ending_non_ed_path)
             save_file(self.verbs_ending_non_ed_path, list(cur_set), True)
         else:
-            save_file_merge(self.verbs_ending_non_ed_path, self.__data_verbs_ending_non_ed_path)
+            save_file_merge(self.verbs_ending_non_ed_path, self.__data_verbs_ending_non_ed_path, True)

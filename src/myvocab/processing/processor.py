@@ -2,6 +2,7 @@ import logging
 import os
 import re
 from pathlib import Path
+
 from src.myvocab.parsing.vocabulary import vocabulary as vcb
 from src.myvocab.parsing.commands.load_settings import load_settings
 from src.myvocab.parsing.commands.write_settings import write_settings
@@ -12,8 +13,11 @@ from src.myvocab.parsing.commands.get_infinit import get_infinit
 from src.myvocab.parsing.commands.save_file import save_file
 from src.myvocab.parsing.commands.diff_two_files import diff_two_files
 from src.myvocab.parsing.commands.get_init_data import get_init_data
+from src.myvocab.parsing.commands.get_init_data import get_init_casing_data
 from src.myvocab.parsing.commands.skip_current_dir import skip_current_dir
+from src.myvocab.parsing.commands.get_casing import get_casing, log_casing
 from src.myvocab.utils.walk_handler.handle_error import handle_error
+from src.myvocab.utils.str_handler.combine_current_target_words import combine_current_target_words
 from src.myvocab.validators import validators as vld
 from src.myvocab.exceptions import exceptions as exc
 from src.myvocab.constants import constants as cns
@@ -33,15 +37,17 @@ def add_pair(payload: dict, pairs: dict) -> None:
          pairs["singular"].add(payload["pair"])
       elif payload["id"] in cns.RANGE_INFINIT_ID:
          pairs["infinit"].add(payload["pair"])
+      elif payload["id"] in cns.RANGE_CASING_ID:
+         pairs["casing"].add(payload["pair"])
 
-def set_transformer (word: str, vocab: vcb.VocabConfig) -> dict:
+def get_transformer (word: str, vocab: vcb.VocabConfig) -> dict:
    """ Process a word through the first fitted transformer. """
 
    vdata = get_init_data(word)
 
    # Singular-transformer
    if vocab.use_lemma_singular:
-      # Skip singularizing verbs ending in -s
+      # Skip singularizing irregular verbs ending in -s
       if word not in vocab.verbs_ending_s:
          vdata = get_singular(word, vocab)
          if vdata["id"] != cns.UNCHANGED_DATA_ID:
@@ -50,6 +56,31 @@ def set_transformer (word: str, vocab: vcb.VocabConfig) -> dict:
    # Infinite-transformer
    if vocab.use_lemma_infinit:
       vdata = get_infinit(word, vocab)
+      if vdata["id"] != cns.UNCHANGED_DATA_ID:
+         return vdata
+
+   return vdata
+
+def get_case_transformer(vocab: vcb.VocabConfig, case_word: str, key_word: str, key_old: str = "") -> dict:
+   """ Process a word through the casing transformer. """
+
+   mixed_word = case_word
+
+   if key_old != "" and key_old != key_word:
+      # The verb form has been changed from V3 or V2 to V1
+      if (vocab.use_lemma_infinit and key_old != key_word
+              and key_word == vocab.infinit.verbs_v1.get(key_word)):
+         mixed_word = combine_current_target_words(case_word, key_word)
+      # The noun form has been changed to the singular
+      elif (vocab.use_lemma_singular and key_old != key_word
+              and key_word == vocab.singular.irregular_plural_nouns.get(key_old)):
+         mixed_word = combine_current_target_words(case_word, key_word)
+
+   vdata = get_init_data(key_word)
+
+   # Casing-transformer
+   if vocab.use_lemma_casing:
+      vdata = get_casing(vocab, mixed_word, key_word)
       if vdata["id"] != cns.UNCHANGED_DATA_ID:
          return vdata
 
@@ -79,9 +110,11 @@ def render_vocab(base_path: Path):
 
    # Add transformers
    if vocab.use_lemma_singular:
-      vocab.set_singular()
+      vocab.set_singular(True)
    if vocab.use_lemma_infinit:
-      vocab.set_infinitive()
+      vocab.set_infinitive(True)
+   if vocab.use_lemma_casing:
+      vocab.set_casing(True)
 
    # Get the list of verbs ending in -s
    verbs_s = set()
@@ -103,7 +136,8 @@ def render_vocab(base_path: Path):
 
    parsed_pairs = {
       "singular": set(),
-      "infinit": set()
+      "infinit": set(),
+      "casing": set()
    }
 
    lines_list = list()
@@ -111,6 +145,8 @@ def render_vocab(base_path: Path):
 
    # Caching transformations for reuse
    transform_dict = dict()
+   # Caching casing for reuse
+   casing_dict = dict()
    # Caching translations for reuse
    translated_words = dict()
 
@@ -118,7 +154,7 @@ def render_vocab(base_path: Path):
    if vocab.use_word_translate:
       # Tag for translation
       trn_tag = cns.TAG_TRANSLATE
-      logger.info(f"Translation direction: " +
+      logger.info("Translation direction: " +
                   f"`{vocab.source_language}` to `{vocab.target_language}` " +
                   f"(`{vocab.source_language_code}` -> `{vocab.target_language_code}`)")
 
@@ -129,7 +165,7 @@ def render_vocab(base_path: Path):
       offset = 0
 
    # Show the `activity indicator`
-   print(f"Parsing files: ", end="", flush=True)
+   print("Parsing files: ", end="", flush=True)
 
    flag_next_file = False
 
@@ -157,9 +193,8 @@ def render_vocab(base_path: Path):
             continue
 
          filepath = Path.joinpath(dirpath, filename)
-
          # Keep the `activity indicator` visible
-         print(f".", end="", flush=True)
+         print(".", end="", flush=True)
 
          file_lines = list()
          file_list = list()
@@ -174,12 +209,12 @@ def render_vocab(base_path: Path):
          t_word = False
          if not vocab.use_order_text:
 
-            cur_str = str(Path.joinpath(dirpath_parts, filename)).ljust(80, '-')
+            file_delimiter = str(Path.joinpath(dirpath_parts, filename)).ljust(80, '-')
             if flag_next_file:
-               file_list.append(f"\n{cur_str}")
+               file_list.append(f"\n{file_delimiter}")
             else:
                flag_next_file = True
-               file_list.append(f"{cur_str}")
+               file_list.append(f"{file_delimiter}")
 
          for file_line in file_lines:
             if file_line == cns.TAG_WORD:
@@ -190,11 +225,24 @@ def render_vocab(base_path: Path):
                continue
 
             if t_word:
-               file_line_words = re.findall(r'\b[a-zA-Z0-9-]+\b', file_line.lower())
+               file_line_words = re.findall(r'\b[a-zA-Z0-9-]+\b', file_line)
+               # Word list processing without any Transformer models
+               if not (vocab.use_lemma_infinit or  vocab.use_lemma_singular or vocab.use_lemma_casing):
+                  # Word list processing with using Casing
+                  if vocab.use_lemma_casing:
+                     cur_list = list()
+                     for f_word in file_line_words:
+                        if casing_word := casing_dict.get(f_word):
+                           val = casing_word
+                        else:
+                           case_data = get_case_transformer(vocab, f_word, f_word.lower())
+                           add_pair(case_data, parsed_pairs)
+                           casing_dict[f_word] = case_data["word"]
+                           val = case_data["word"]
+                        cur_list.append(val)
+                     file_line_words = cur_list
 
-               # Word list processing without using Transformers
-               if not (vocab.use_lemma_infinit or  vocab.use_lemma_singular):
-
+                  # The words have been processed
                   if vocab.use_order_text and not vocab.use_word_translate:
                      file_set.update(file_line_words)
                   elif vocab.use_order_text:
@@ -205,28 +253,46 @@ def render_vocab(base_path: Path):
                         if file_line_word not in file_set:
                            file_list.append(trn_tag + file_line_word)
                            file_set.add(file_line_word)
-
                else:
                   # Word processing using Transformers
-                  for word in file_line_words:
+                  for fl_word in file_line_words:
+                     lower_word = fl_word.lower()
                      # Exclude numbers
-                     if re.match(r'\b[0-9]+\b', word):
-                           continue
+                     if re.match(r'\b[0-9]+\b', fl_word):
+                        continue
+
                      # If the current word has already been processed
-                     if val := transform_dict.get(word):
+                     been_val = ""
+                     if (vocab.use_lemma_casing
+                             and (been_val := casing_dict.get(fl_word))):
+                        pass
+                     if been_val == "":
+                        if ((vocab.use_lemma_infinit or vocab.use_lemma_singular)
+                                and (been_val := transform_dict.get(lower_word))):
+                           pass
+                     if been_val is not None and been_val != "":
                         if vocab.use_order_text:
-                           file_set.add(trn_tag + val)
+                           file_set.add(trn_tag +  been_val)
                         else:
-                           if val not in file_set:
-                              file_list.append(trn_tag + val)
-                              file_set.add(val)
+                           if been_val not in file_set:
+                              file_list.append(trn_tag + been_val)
+                              file_set.add(been_val)
                         continue
 
                      # if the word contains a hyphen
                      is_multi = False
+                     multi_words = None
+                     # list of values for a given key in vocab.casing.mixed_casing dictionary
+                     casing_mixed_list = None
+
                      # Skip hyphenated compound processing?
-                     if word not in vocab.infinit.only_ending_ed and word not in vocab.singular.only_ending_s:
-                        multi_words = re.split(r'-', word)
+                     is_skip = vocab.use_lemma_infinit and lower_word in vocab.infinit.only_ending_ed
+                     if not is_skip:
+                        is_skip = vocab.use_lemma_singular and lower_word in vocab.singular.only_ending_s
+                     if not is_skip:
+                        is_skip = vocab.use_lemma_casing and (casing_mixed_list := vocab.casing.mixed_casing.get(lower_word)) and lower_word in [item.lower() for item in casing_mixed_list]
+                     if not is_skip:
+                        multi_words = re.split(r'-', fl_word)
                         if len(multi_words) > 1:
                            for m_word in multi_words:
                               if m_word != "":
@@ -235,41 +301,104 @@ def render_vocab(base_path: Path):
                                  break
                      # Hyphenated compound
                      if is_multi:
-                        phrase = ""
-                        # data_list = list()
-                        for m_word in multi_words:
-                           if m_word != "":
-                              if phrase != "":
-                                 phrase += "-"
-                              # Hyphenated word ending in -s or -ed (e.g., passers-by; strong-willed)
-                              transform_data = set_transformer(m_word, vocab)
-                              # data_list.append(transform_data)
-                              phrase = phrase + transform_data["word"]
-                        if phrase != "":
-                           transform_dict[word] = phrase
-                           # Keep the resulting Hyphenated compounds and their parsing pair
-                           init_data = get_init_data(trn_tag + phrase)
-                           if phrase != word:
-                              init_data["pair"] = word + " - " + phrase
-                           add_pair(init_data, parsed_pairs)
-                           if vocab.use_order_text:
-                              file_set.add(trn_tag + phrase)
+                        lower_phrase = ""
+                        case_phrase = ""
+                        source_phrase = ""
+                        transform_data = get_init_data()
+                        case_data = get_init_data()
+                        trns_data_id = cns.UNCHANGED_DATA_ID
+
+                        for multi_word in multi_words:
+                           lower_multi_word = multi_word.lower()
+                           if multi_word != "":
+                              if lower_phrase != "":
+                                 lower_phrase += "-"
+                              if case_phrase != "":
+                                 case_phrase += "-"
+                                 source_phrase += "-"
+
+                              # Proceed with the transform using infinite or singular
+                              if trans_val := transform_dict.get(lower_multi_word):
+                                 lower_phrase = lower_phrase + trans_val
+                              else:
+                                 transform_data = get_transformer(lower_multi_word, vocab)
+                                 transform_dict[lower_multi_word] = transform_data["word"]
+                                 lower_phrase = lower_phrase + transform_data["word"]
+                                 trans_val = transform_data["word"]
+                                 if transform_data["id"] != cns.UNCHANGED_DATA_ID:
+                                    trns_data_id = transform_data["id"]
+                              # Proceed with the casing
+                              if vocab.use_lemma_casing:
+                                 if casing_word := casing_dict.get(trans_val):
+                                    case_phrase = case_phrase + casing_word
+                                    source_phrase = source_phrase + multi_word[:len(casing_word)]
+                                 else:
+                                    case_data = get_case_transformer(vocab, multi_word, trans_val, lower_multi_word)
+                                    casing_dict[multi_word] = case_data["word"]
+                                    case_phrase = case_phrase + case_data["word"]
+                                    source_phrase = source_phrase + multi_word[:len(case_data["word"])]
+                                    if case_data["id"] != cns.UNCHANGED_DATA_ID:
+                                       trns_data_id = case_data["id"]
+                        # The hyphenated phrase has been processed
+                        if lower_phrase != "":
+                           transform_dict[lower_word] = lower_phrase
+                           # A specific casing rule was applied
+                           if vocab.use_lemma_casing and trns_data_id in cns.RANGE_CASING_ID:
+                              casing_dict[fl_word] = case_phrase
+                              case_data["id"] = cns.RANGE_CASING_MAX_ID
+                              case_data["pair"] = fl_word + " - " + case_phrase
+                              add_pair(case_data, parsed_pairs)
+
+                              # Log a specific rule
+                              hyphen_word = case_phrase
+                              log_casing(get_init_casing_data(), f"{source_phrase} -> {case_phrase}")
+                           # A specific transform rule was applied
                            else:
-                              if phrase not in file_set:
-                                 file_list.append(trn_tag + phrase)
-                                 file_set.add(phrase)
+                              # Log a specific rule
+                              hyphen_word = lower_phrase
+                              if lower_phrase != lower_word:
+                                 if vocab.use_lemma_infinit and trns_data_id in cns.RANGE_INFINIT_ID:
+                                    transform_data["id"] = cns.RANGE_INFINIT_MAX_ID
+                                 else:
+                                    transform_data["id"] = cns.RANGE_SINGULAR_MAX_ID
+                                 transform_data["pair"] = lower_word + " - " + lower_phrase
+                                 add_pair(transform_data, parsed_pairs)
+                           # The word has been processed
+                           if vocab.use_order_text:
+                              file_set.add(trn_tag + hyphen_word)
+                           else:
+                              if hyphen_word not in file_set:
+                                 file_list.append(trn_tag + hyphen_word)
+                                 file_set.add(hyphen_word)
                      else:
-                        transform_data = set_transformer(word, vocab)
-                        transform_word = transform_data["word"]
-                        transform_dict[word] = transform_word
-                        transform_data["word"] = trn_tag + transform_word
-                        add_pair(transform_data, parsed_pairs)
+                        sng_word = ""
+                        # A populated list serves as a flag to apply 'Before' casing
+                        if casing_mixed_list is not None and casing_mixed_list:
+                           case_data = get_case_transformer(vocab, fl_word, lower_word)
+                           if case_data["id"] != cns.UNCHANGED_DATA_ID:
+                              add_pair(case_data, parsed_pairs)
+                              casing_dict[fl_word] = case_data["word"]
+                              sng_word = case_data["word"]
+                        # 'Before' casing did not work. Proceed with the transform using infinite or singular
+                        if sng_word == "":
+                           transform_data = get_transformer(lower_word, vocab)
+                           transform_dict[lower_word] = transform_data["word"]
+                           add_pair(transform_data, parsed_pairs)
+                           sng_word = transform_data["word"]
+                           # Proceed with the 'After' casing
+                           if vocab.use_lemma_casing:
+                              case_data = get_case_transformer(vocab, fl_word, sng_word, lower_word)
+                              add_pair(case_data, parsed_pairs)
+                              casing_dict[fl_word] = case_data["word"]
+                              sng_word = case_data["word"]
+
+                        # The word has been processed
                         if vocab.use_order_text:
-                           file_set.add(trn_tag + transform_word)
+                           file_set.add(trn_tag + sng_word)
                         else:
-                           if transform_word not in file_set:
-                              file_list.append(trn_tag + transform_word)
-                              file_set.add(transform_word)
+                           if sng_word not in file_set:
+                              file_list.append(trn_tag + sng_word)
+                              file_set.add(sng_word)
             else:
                file_line = file_line.strip()
                if file_line != '':
@@ -298,50 +427,49 @@ def render_vocab(base_path: Path):
       auth = os.getenv('AUTH')
       logger.info(f"auth: {auth}")
 
+      iam_token = None
+      transl_words = None
+
       if auth == 'account_iam':
          # To get an IAM token with a Yandex account
          vdata = fetch_iam_oauth()
          if vdata.get("ok") and (iam_token := vdata.get("iamToken")):
             transl_words = None if vocab.use_order_text else translated_words
-            all_list = translate(
-               iam=iam_token,
-               words=all_list,
-               target_language_code=vocab.target_language_code,
-               result_directory=vocab.result_file.parent,
-               translated_words=transl_words)
          else:
             all_list = remove_translation_marks(all_list)
-            logger.error(f"Failed to fetch IAM token while preparing to translate.")
-
+            logger.error("Failed to fetch IAM token while preparing to translate.")
       elif auth == 'exchange_jwt_iam':
          # To get an IAM token with an Authorized keys.
          try:
             iam_token = create_iam_token()
             transl_words = None if vocab.use_order_text else translated_words
-            all_list = translate(
-               iam=iam_token,
-               words=all_list,
-               target_language_code=vocab.target_language_code,
-               result_directory=vocab.result_file.parent,
-               translated_words=transl_words)
          except Exception as e:
             all_list = remove_translation_marks(all_list)
             logger.error(f"Failed to fetch IAM token while preparing to translate: {e}")
-
       else:
          # To get an IAM token from the function code in Yandex Cloud Functions
          vdata = fetch_iam_func()
          if iam_token := vdata.get("access_token"):
             transl_words = None if vocab.use_order_text else translated_words
-            all_list = translate(
-               iam=iam_token,
-               words=all_list,
-               target_language_code=vocab.target_language_code,
-               result_directory=vocab.result_file.parent,
-               translated_words=transl_words)
          else:
             all_list = remove_translation_marks(all_list)
-            logger.error(f"Failed to fetch IAM token while preparing to translate.")
+            logger.error("Failed to fetch IAM token while preparing to translate.")
+
+      if iam_token is not None and iam_token != "":
+         all_list = translate(
+            iam = iam_token,
+            words = all_list,
+            target_language_code = vocab.target_language_code,
+            result_directory = vocab.result_file.parent,
+            translated_words = transl_words)
+   else:
+      # Delete both the sent and received API translation files
+      translate_path = Path.joinpath(vocab.result_directory, cns.TRANSLATE_FOLDER)
+      if translate_path.exists() and translate_path.is_dir():
+         # Loop through and delete files only
+         for file_path in translate_path.iterdir():
+            if file_path.is_file():
+               file_path.unlink()
 
    # Vocabulary
    if not vocab.result_file.is_file():
@@ -362,6 +490,12 @@ def render_vocab(base_path: Path):
       unreviewed_pairs = diff_two_files(vocab.singular.parsed_pairs_path, vocab.singular.reviewed_pairs_path)
       # Write the remaining unverified transformation to the `singular.unreviewed_pairs_path` directory.
       save_file(vocab.singular.unreviewed_pairs_path, unreviewed_pairs, vocab.use_order_text)
+   else:
+      # Save empty files
+      if vocab.singular is None:
+         vocab.set_singular(False)
+      save_file(vocab.singular.parsed_pairs_path, list(), False)
+      save_file(vocab.singular.unreviewed_pairs_path, list(), False)
 
    # Infinitive
    if vocab.use_lemma_infinit:
@@ -375,3 +509,28 @@ def render_vocab(base_path: Path):
       unreviewed_pairs = diff_two_files(vocab.infinit.parsed_pairs_path, vocab.infinit.reviewed_pairs_path)
       # Write the remaining unverified transformation to the `infinit.unreviewed_pairs_path` directory.
       save_file(vocab.infinit.unreviewed_pairs_path, unreviewed_pairs, vocab.use_order_text)
+   else:
+      # Save empty files
+      if vocab.infinit is None:
+         vocab.set_infinitive(False)
+      save_file(vocab.infinit.parsed_pairs_path, list(), False)
+      save_file(vocab.infinit.unreviewed_pairs_path, list(), False)
+
+   # Casing
+   if vocab.use_lemma_casing:
+      # Write all pairs of original words and their casing forms to the casing.`casing.parsed_pairs_path` directory.
+      save_file(vocab.casing.parsed_pairs_path, list(parsed_pairs["casing"]), vocab.use_order_text)
+
+      # This allows the user to potentially analyze the applied transformations.
+      # Some or all transformations validated by the user may be copied to the `casing.reviewed_pairs_path` directory.
+
+      # Get the remaining unverified transformation.
+      unreviewed_pairs = diff_two_files(vocab.casing.parsed_pairs_path, vocab.casing.reviewed_pairs_path)
+      # Write the remaining unverified transformation to the `casing.unreviewed_pairs_path` directory.
+      save_file(vocab.casing.unreviewed_pairs_path, unreviewed_pairs, vocab.use_order_text)
+   else:
+      # Save empty files
+      if vocab.casing is None:
+         vocab.set_casing(False)
+      save_file(vocab.casing.parsed_pairs_path, list(), False)
+      save_file(vocab.casing.unreviewed_pairs_path, list(), False)

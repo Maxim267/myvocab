@@ -18,6 +18,8 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
     """
 
     cur_range = cns.RANGE_INFINIT_ID
+    # The range's max_id value must only be accessed outside this function
+    cur_range_max_id = cns.RANGE_INFINIT_MAX_ID
     cur_word = word.lower().strip()
     cur_data = get_init_data(cur_word)
 
@@ -146,5 +148,15 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
         # In case of design range violation
         if cur_data['id'] not in cur_range:
             raise exc.IdentifierOutOfRangeError(cur_data['id'], cur_range)
-
+        elif cur_data['id'] == cur_range_max_id:
+            raise exc.IdentifierInvalidValueError(cur_data['id'], message = "The max_id of the range must only be used outside of this function:")
     return cur_data
+
+def log_infinit(payload: dict, changed: str) -> None:
+    # If data has changed
+    if payload['id'] != cns.UNCHANGED_DATA_ID:
+        # Log the word transformation pair
+        logger.debug(f"(id={payload['id']}) {changed}")
+        # In case of design range violation
+        if payload['id'] not in cns.RANGE_INFINIT_ID:
+            raise exc.IdentifierOutOfRangeError(payload['id'], cns.RANGE_INFINIT_ID)

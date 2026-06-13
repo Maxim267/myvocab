@@ -19,13 +19,15 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
     """
 
     cur_range = cns.RANGE_SINGULAR_ID
+    # The range's max_id value must only be accessed outside this function
+    cur_range_max_id = cns.RANGE_SINGULAR_MAX_ID
     cur_word = word.lower().strip()
     cur_data = get_init_data(cur_word)
 
     # It requires an irregular plural noun (e.g., feet)
     if val := vocab.singular.irregular_plural_nouns.get(cur_word):
         cur_data = {
-            "id": 10, 
+            "id": 10,
             "word": val, # (e.g., foot)
             "pair": "" if cur_word == val else f"{cur_word} - {val}"
         }
@@ -196,5 +198,16 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
         # In case of design range violation
         if cur_data['id'] not in cur_range:
             raise exc.IdentifierOutOfRangeError(cur_data['id'], cur_range)
+        elif cur_data['id'] == cur_range_max_id:
+            raise exc.IdentifierInvalidValueError(cur_data['id'], message = "The max_id of the range must only be used outside of this function:")
 
     return cur_data
+
+def log_singular(payload: dict, changed: str) -> None:
+    # If data has changed
+    if payload['id'] != cns.UNCHANGED_DATA_ID:
+        # Log the word transformation pair
+        logger.debug(f"(id={payload['id']}) {changed}")
+        # In case of design range violation
+        if payload['id'] not in cns.RANGE_SINGULAR_ID:
+            raise exc.IdentifierOutOfRangeError(payload['id'], cns.RANGE_SINGULAR_ID)

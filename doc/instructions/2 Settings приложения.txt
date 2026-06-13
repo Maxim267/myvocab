@@ -52,6 +52,7 @@ result_file = vocabulary.txt
 directories_file = directories.txt
 use_lemma_singular = True
 use_lemma_infinit = True
+use_lemma_casing = False
 use_word_translate = False
 target_language_code = ru
 use_order_text = True
@@ -62,6 +63,7 @@ result_file - Наименование формируемого файла vocab
 directories_file - Наименование файла содержащего древовидную структуру парсинга каталогов начиная с базового.
 use_lemma_singular - Флаг изменения множественной формы `отдельных английских слов`* в форму единственного числа.
 use_lemma_infinit - Флаг изменения формы прошедшего времени `отдельных английских глаголов` в базовую форму.
+use_lemma_casing - Флаг приведения формы слова к заданному регистру, в том числе и смешанному.
 use_word_translate - Флаг перевода `отдельных английских слов` на выбранное направление (target_language_code).
 target_language_code - Направление перевода `отдельных английских слов` (всегда с английского).
 use_order_text - Флаг сортировки текста в формируемом файле vocabulary.
