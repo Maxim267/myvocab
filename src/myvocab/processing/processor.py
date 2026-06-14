@@ -403,7 +403,7 @@ def render_vocab(base_path: Path):
                            if vocab.use_lemma_casing and trns_data_id in cns.RANGE_CASING_ID:
                               casing_dict[fl_word] = case_phrase
                               case_data["id"] = cns.RANGE_CASING_MAX_ID
-                              case_data["pair"] = fl_word + " - " + case_phrase
+                              case_data["pair"] = "" if fl_word == case_phrase else f"{fl_word} - {case_phrase}"
                               add_pair(case_data, parsed_pairs)
 
                               # Log a specific rule
@@ -418,7 +418,7 @@ def render_vocab(base_path: Path):
                                     transform_data["id"] = cns.RANGE_INFINIT_MAX_ID
                                  else:
                                     transform_data["id"] = cns.RANGE_SINGULAR_MAX_ID
-                                 transform_data["pair"] = lower_word + " - " + lower_phrase
+                                 case_data["pair"] = "" if lower_word == lower_phrase else f"{lower_word} - {lower_phrase}"
                                  add_pair(transform_data, parsed_pairs)
                            # The word has been processed
                            if vocab.use_order_text:
