@@ -199,10 +199,42 @@ def render_vocab(base_path: Path):
          file_lines = list()
          file_list = list()
          file_set = set()
+         # First words of sentences that are capitalized, but allow for lowercase as well
+         first_words = set()
 
          # Read the current file
          with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
+
+            # Extract the first words of sentences that are capitalized, but allow for lowercase as well
+            if vocab.use_lemma_casing and (vocab.use_lemma_infinit or vocab.use_lemma_singular):
+               firsts = set()
+               firsts.update(re.findall(r'[.!?…—]["“”„]*[ \n]["“”„]*([A-Z][a-z0-9-]+)', content, re.MULTILINE))
+               # Extract all words from a text
+               alls = set()
+               alls.update(re.findall(r'\b[a-zA-Z0-9-]+\b', content, re.MULTILINE))
+               # Extract words that allow lowercase
+               for word in firsts:
+                  cur_word = word.lower()
+                  # If the text contains the word in lowercase
+                  if cur_word in alls:
+                     first_words.add(word)
+               # Remove processed words from the "firsts" set
+               for word in first_words:
+                  firsts.remove(word)
+
+               # Transform the remaining words and check if they can be added to the 'first_words' set.
+               logger.debug("Start transforming the words and adding some of them to the case set.")
+               for word in firsts:
+                  if word[0].isupper():
+                     trans_data = get_transformer(word, vocab)
+                     if trans_data["word"] != word.lower():
+                        case_data = get_case_transformer(vocab, word, trans_data["word"], word.lower)
+                        # Add the capitalized word to the set if a matching lowercase version is present
+                        if case_data["word"].lower() in alls:
+                           first_words.add(word)
+               logger.debug("Finish transforming the words and adding some of them to the case set.")
+
             # Read lines from a file
             file_lines = re.findall(r'[^\n]+', content)
 
@@ -232,10 +264,20 @@ def render_vocab(base_path: Path):
                   if vocab.use_lemma_casing:
                      cur_list = list()
                      for f_word in file_line_words:
+
+                        # Convert the word to lowercase
+                        if f_word in first_words:
+                           f_word = f_word.lower()
+
                         if casing_word := casing_dict.get(f_word):
                            val = casing_word
                         else:
                            case_data = get_case_transformer(vocab, f_word, f_word.lower())
+
+                           # Convert the word to lowercase
+                           if case_data["word"] in first_words:
+                              case_data["word"] = case_data["word"].lower()
+
                            add_pair(case_data, parsed_pairs)
                            casing_dict[f_word] = case_data["word"]
                            val = case_data["word"]
@@ -256,6 +298,11 @@ def render_vocab(base_path: Path):
                else:
                   # Word processing using Transformers
                   for fl_word in file_line_words:
+
+                     # Convert the word to lowercase
+                     if fl_word in first_words:
+                        fl_word = fl_word.lower()
+
                      lower_word = fl_word.lower()
                      # Exclude numbers
                      if re.match(r'\b[0-9]+\b', fl_word):
@@ -309,6 +356,11 @@ def render_vocab(base_path: Path):
                         trns_data_id = cns.UNCHANGED_DATA_ID
 
                         for multi_word in multi_words:
+
+                           # Convert the word to lowercase
+                           if multi_word in first_words:
+                              multi_word = multi_word.lower()
+
                            lower_multi_word = multi_word.lower()
                            if multi_word != "":
                               if lower_phrase != "":
@@ -334,6 +386,11 @@ def render_vocab(base_path: Path):
                                     source_phrase = source_phrase + multi_word[:len(casing_word)]
                                  else:
                                     case_data = get_case_transformer(vocab, multi_word, trans_val, lower_multi_word)
+
+                                    # Convert the word to lowercase
+                                    if case_data["word"] in first_words:
+                                       case_data["word"] = case_data["word"].lower()
+
                                     casing_dict[multi_word] = case_data["word"]
                                     case_phrase = case_phrase + case_data["word"]
                                     source_phrase = source_phrase + multi_word[:len(case_data["word"])]
@@ -375,6 +432,11 @@ def render_vocab(base_path: Path):
                         # A populated list serves as a flag to apply 'Before' casing
                         if casing_mixed_list is not None and casing_mixed_list:
                            case_data = get_case_transformer(vocab, fl_word, lower_word)
+
+                           # Convert the word to lowercase
+                           if case_data["word"] in first_words:
+                              case_data["word"] = case_data["word"].lower()
+
                            if case_data["id"] != cns.UNCHANGED_DATA_ID:
                               add_pair(case_data, parsed_pairs)
                               casing_dict[fl_word] = case_data["word"]
@@ -388,6 +450,11 @@ def render_vocab(base_path: Path):
                            # Proceed with the 'After' casing
                            if vocab.use_lemma_casing:
                               case_data = get_case_transformer(vocab, fl_word, sng_word, lower_word)
+
+                              # Convert the word to lowercase
+                              if case_data["word"] in first_words:
+                                 case_data["word"] = case_data["word"].lower()
+
                               add_pair(case_data, parsed_pairs)
                               casing_dict[fl_word] = case_data["word"]
                               sng_word = case_data["word"]
