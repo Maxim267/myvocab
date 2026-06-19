@@ -2378,7 +2378,6 @@ movements - movement
 moves - move
 movies - movie
 mowers - mower
-mrs - mr
 mudbloods - mudblood
 muffins - muffin
 muffs - muff

@@ -63,7 +63,7 @@ def get_infinit(word: str, vocab: vcb.VocabConfig) -> dict:
             }
 
         # Searching for a verb not ending in '-ed' and its base form ending in '-s' in the set
-        elif verb_e_d[0][1][-1:] == 's' and verb_e_d[0][1] in vocab.singular.only_ending_s:
+        elif verb_e_d[0][1][-1:] == 's' and vocab.singular is not None and verb_e_d[0][1] in vocab.singular.only_ending_s:
             val = verb_e_d[0][1]
             cur_data = {
                 "id": 1060,

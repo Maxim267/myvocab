@@ -51,11 +51,11 @@ class VocabConfig:
     # Flag to enable infinitive transformation
     use_lemma_infinit: bool = True
     # Flag to enable casing transformation
-    use_lemma_casing: bool = False
+    use_lemma_casing: bool = True
     # Flag to enable translation
     use_word_translate: bool = False
     # Flag to enable ordering in the result vocabulary file
-    use_order_text: bool = True
+    use_order_text: bool = False
     # Flag to enable processing files and folders starting with "!"
     use_dir_with_leading_exclamation_mark: bool = False
 

@@ -122,3 +122,9 @@ class CasingAttrib:
             save_file(self.mixed_casing_path, list(cur_set), True)
         else:
             save_file_merge(self.mixed_casing_path, self.__data_mixed_casing_path, False)
+
+        if not self.reviewed_pairs_path.is_file():
+            cur_set = get_file_unique_lines(self.__data_reviewed_pairs_path)
+            save_file(self.reviewed_pairs_path, list(cur_set), True)
+        else:
+            save_file_merge(self.reviewed_pairs_path, self.__data_reviewed_pairs_path, False)

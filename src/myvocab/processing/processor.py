@@ -207,7 +207,7 @@ def render_vocab(base_path: Path):
             content = f.read()
 
             # Extract the first words of sentences that are capitalized, but allow for lowercase as well
-            if vocab.use_lemma_casing and (vocab.use_lemma_infinit or vocab.use_lemma_singular):
+            if vocab.use_lemma_casing:
                firsts = set()
                firsts.update(re.findall(r'[.!?…—]["“”„]*[ \n]["“”„]*([A-Z][a-z0-9-]+)', content, re.MULTILINE))
                # Extract all words from a text
@@ -223,17 +223,18 @@ def render_vocab(base_path: Path):
                for word in first_words:
                   firsts.remove(word)
 
-               # Transform the remaining words and check if they can be added to the 'first_words' set.
-               logger.debug("Start transforming the words and adding some of them to the case set.")
-               for word in firsts:
-                  if word[0].isupper():
-                     trans_data = get_transformer(word, vocab)
-                     if trans_data["word"] != word.lower():
-                        case_data = get_case_transformer(vocab, word, trans_data["word"], word.lower)
-                        # Add the capitalized word to the set if a matching lowercase version is present
-                        if case_data["word"].lower() in alls:
-                           first_words.add(word)
-               logger.debug("Finish transforming the words and adding some of them to the case set.")
+               if vocab.use_lemma_infinit or vocab.use_lemma_singular:
+                  # Transform the remaining words and check if they can be added to the 'first_words' set.
+                  logger.debug("Start transforming the words and adding some of them to the case set.")
+                  for word in firsts:
+                     if word[0].isupper():
+                        trans_data = get_transformer(word, vocab)
+                        if trans_data["word"] != word.lower():
+                           case_data = get_case_transformer(vocab, word, trans_data["word"], word.lower)
+                           # Add the capitalized word to the set if a matching lowercase version is present
+                           if case_data["word"].lower() in alls:
+                              first_words.add(word)
+                  logger.debug("Finish transforming the words and adding some of them to the case set.")
 
             # Read lines from a file
             file_lines = re.findall(r'[^\n]+', content)
@@ -259,7 +260,7 @@ def render_vocab(base_path: Path):
             if t_word:
                file_line_words = re.findall(r'\b[a-zA-Z0-9-]+\b', file_line)
                # Word list processing without any Transformer models
-               if not (vocab.use_lemma_infinit or  vocab.use_lemma_singular or vocab.use_lemma_casing):
+               if not (vocab.use_lemma_infinit or  vocab.use_lemma_singular):
                   # Word list processing with using Casing
                   if vocab.use_lemma_casing:
                      cur_list = list()
