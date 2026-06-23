@@ -19,5 +19,5 @@ def fetch_iam_oauth() -> dict:
     """
     headers = {}
 
-    logger.info(f"Getting an IAM token for a Yandex account.")    
+    logger.info("Getting an IAM token for a Yandex account.")
     return fetch(url=cns.URI_IAM_TOKENS, headers=headers, payload=data)

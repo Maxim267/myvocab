@@ -1,8 +1,15 @@
-def get_priority_word(words: list, word) -> str:
-    """ Get the string with the maximum weight from the list derived from the given word. """
+def get_priority_word(words: list, word: str) -> str | None:
+    """ Get the string with the maximum weight from the list derived from the given word.
+
+    Args:
+        words (list): List of words.
+        word (str): Word to get the maximum weight from.
+    Returns:
+        The highest-priority word in the list
+    """
 
     if not words:
-        return word
+        return None
 
     return_val = ""
     weight = 0

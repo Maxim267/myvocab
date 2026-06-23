@@ -20,7 +20,7 @@ def create_jwt(key_path: Path) -> str:
         str: JSON Web Token
     """
 
-    logger.info(f"Generating a JWT .")
+    logger.info("Generating a JWT .")
 
     # Reading a private key from a JSON file
     with open(file=key_path, mode='r', encoding='utf-8') as f:

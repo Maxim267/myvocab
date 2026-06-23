@@ -21,7 +21,7 @@ def create_iam_token() -> str:
     str: IAM Token
   """
 
-  logger.info(f"Get an IAM token using a JWT.")
+  logger.info("Get an IAM token using a JWT.")
 
   auth_key_path = os.getenv('AUTH_KEY_PATH')
   if not auth_key_path:

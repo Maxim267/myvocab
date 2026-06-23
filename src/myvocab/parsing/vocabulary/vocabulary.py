@@ -5,11 +5,15 @@ from src.myvocab.parsing.casing import casing as csn
 from src.myvocab.validators import validators as vld
 from src.myvocab.utils.logging_handler.set_file_handler import set_file_handler
 
+
 class VocabConfig:
     """ Vocabulary configuration
 
     The Vocabulary configuration is a structure designed to automatically generate and store
     a set of attributes used for parsing text files, starting at the base directory.
+
+    Args:
+        base_path (Path): Base directory.
     """
 
     __singular: sng.SingularAttrib = None
@@ -184,44 +188,44 @@ class VocabConfig:
     def __str__(self) -> str:
         """ Return the string representation of the object. """
         cur_str = (
-        f"\n{'-'*40}\n"
-        f"{__class__}\n"
-        f"# VOCABULARY\n"
-        f"dir_unique_id = {self.dir_unique_id}\n"
-        f"base_directory = {self.base_directory}\n"
-        f"result_directory = {self.result_directory}\n"
-        f"result_file = {self.result_file}\n"
-        f"directories_file = {self.directories_file}\n"
-        f"settings_file = {self.settings_file}\n"
-        f"all_patches_file = {self.all_patches_file}\n"
-        f"target_languages_file = {self.target_languages_file}\n"
-        f"log_file = {self.log_file}\n"
-        f"use_lemma_singular = {self.use_lemma_singular}\n"
-        f"use_lemma_infinit = {self.use_lemma_infinit}\n"
-        f"use_lemma_casing = {self.use_lemma_casing}\n"
-        f"use_word_translate = {self.use_word_translate}\n"
-        f"target_language = {self.target_language}\n"
-        f"use_order_text = {self.use_order_text}\n"
-        f"use_dir_with_leading_exclamation_mark = {self.use_dir_with_leading_exclamation_mark}\n"
-        f"{"" if self.singular is None else f"{self.singular}"}"
-        f"{"" if self.infinit is None else f"{self.infinit}"}"
-        f"{"" if self.casing is None else f"{self.casing}"}"
-        f"{'-'*40}\n"
+            f"\n{'-' * 40}\n"
+            f"{__class__}\n"
+            f"# VOCABULARY\n"
+            f"dir_unique_id = {self.dir_unique_id}\n"
+            f"base_directory = {self.base_directory}\n"
+            f"result_directory = {self.result_directory}\n"
+            f"result_file = {self.result_file}\n"
+            f"directories_file = {self.directories_file}\n"
+            f"settings_file = {self.settings_file}\n"
+            f"all_patches_file = {self.all_patches_file}\n"
+            f"target_languages_file = {self.target_languages_file}\n"
+            f"log_file = {self.log_file}\n"
+            f"use_lemma_singular = {self.use_lemma_singular}\n"
+            f"use_lemma_infinit = {self.use_lemma_infinit}\n"
+            f"use_lemma_casing = {self.use_lemma_casing}\n"
+            f"use_word_translate = {self.use_word_translate}\n"
+            f"target_language = {self.target_language}\n"
+            f"use_order_text = {self.use_order_text}\n"
+            f"use_dir_with_leading_exclamation_mark = {self.use_dir_with_leading_exclamation_mark}\n"
+            f"{"" if self.singular is None else f"{self.singular}"}"
+            f"{"" if self.infinit is None else f"{self.infinit}"}"
+            f"{"" if self.casing is None else f"{self.casing}"}"
+            f"{'-' * 40}\n"
         )
         return cur_str
 
     def str_path(self) -> str:
         """ Return the content of all used directories as a string. """
         cur_str = (
-        f"# VOCABULARY\n"
-        f"{str(self.result_file.resolve())}\n"
-        f"{str(self.directories_file.resolve())}\n"
-        f"{str(self.settings_file.resolve())}\n"
-        f"{str(self.all_patches_file.resolve())}\n"
-        f"{str(self.target_languages_file.resolve())}\n"
-        f"{str(self.log_file.resolve())}\n"
-        f"{"" if self.singular is None else f"{self.singular.str_path()}"}"
-        f"{"" if self.infinit is None else f"{self.infinit.str_path()}"}"
-        f"{"" if self.casing is None else f"{self.casing.str_path()}"}"
+            f"# VOCABULARY\n"
+            f"{str(self.result_file.resolve())}\n"
+            f"{str(self.directories_file.resolve())}\n"
+            f"{str(self.settings_file.resolve())}\n"
+            f"{str(self.all_patches_file.resolve())}\n"
+            f"{str(self.target_languages_file.resolve())}\n"
+            f"{str(self.log_file.resolve())}\n"
+            f"{"" if self.singular is None else f"{self.singular.str_path()}"}"
+            f"{"" if self.infinit is None else f"{self.infinit.str_path()}"}"
+            f"{"" if self.casing is None else f"{self.casing.str_path()}"}"
         )
         return cur_str

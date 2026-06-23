@@ -13,5 +13,5 @@ def fetch_iam_func() -> dict:
 
     headers = {}
 
-    logger.info(f"Using function to get an IAM token for a service account.")
+    logger.info("Using function to get an IAM token for a service account.")
     return get(url=cns.URI_FUNC_IAM_TOKENS, headers=headers)

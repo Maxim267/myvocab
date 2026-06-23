@@ -8,11 +8,16 @@ from src.myvocab.parsing.commands.save_file_merge import save_file_merge
 
 logger = logging.getLogger(__name__)
 
+
 class CasingAttrib:
     """ Casing transformation configuration
 
     The `Casing transformation configuration` is a structure designed to automatically generate and store
     a set of attributes used when converting words to their respective letter cases.
+
+    Args:
+        dir_unique_id (str): Unique base directory.
+        is_init (bool, optional): Whether to initialize the `Casing transformation configuration`.
     """
 
     __mixed_casing: dict = None
@@ -21,6 +26,7 @@ class CasingAttrib:
         """ Initialize the `Casing transformation configuration`.
         Args:
             dir_unique_id (str): Unique base directory.
+            is_init (bool, optional): Whether to initialize the `Casing transformation configuration`.
         """
         self.__dir_unique_id = dir_unique_id
         if is_init:
@@ -93,22 +99,22 @@ class CasingAttrib:
     def __str__(self):
         """ Return the string representation of the object. """
         cur_set = (
-        f"\n  {__class__}\n"
-        f"  # ALLOGRAPHICATION\n"
-        f"  mixed_casing_path = {self.mixed_casing_path}\n"
-        f"  reviewed_pairs_path = {self.reviewed_pairs_path}\n"
-        f"  parsed_pairs_path = {self.parsed_pairs_path}\n"
-        f"  unreviewed_pairs_path = {self.unreviewed_pairs_path}\n")
+            f"\n  {__class__}\n"
+            f"  # ALLOGRAPHICATION\n"
+            f"  mixed_casing_path = {self.mixed_casing_path}\n"
+            f"  reviewed_pairs_path = {self.reviewed_pairs_path}\n"
+            f"  parsed_pairs_path = {self.parsed_pairs_path}\n"
+            f"  unreviewed_pairs_path = {self.unreviewed_pairs_path}\n")
         return cur_set
 
     def str_path(self) -> str:
         """ Return the content of all used directories as a string. """
         cur_set = (
-        f"# ALLOGRAPHICATION\n"
-        f"{str(self.mixed_casing_path.resolve())}\n"
-        f"{str(self.reviewed_pairs_path.resolve())}\n"
-        f"{str(self.parsed_pairs_path.resolve())}\n"
-        f"{str(self.unreviewed_pairs_path.resolve())}\n"
+            f"# ALLOGRAPHICATION\n"
+            f"{str(self.mixed_casing_path.resolve())}\n"
+            f"{str(self.reviewed_pairs_path.resolve())}\n"
+            f"{str(self.parsed_pairs_path.resolve())}\n"
+            f"{str(self.unreviewed_pairs_path.resolve())}\n"
         )
         return cur_set
 

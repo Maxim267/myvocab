@@ -4,6 +4,7 @@ TRUTH_STRINGS  = ('true', '1')
 FALSE_STRINGS = ('false', '0')
 
 # IDENTIFIERS
+# and their corresponding non-overlapping ranges
 UNCHANGED_DATA_ID = -1000
 RANGE_SINGULAR_ID = range(1, 1000)
 RANGE_SINGULAR_MAX_ID = 1000 - 1

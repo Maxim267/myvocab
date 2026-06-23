@@ -11,11 +11,16 @@ from src.myvocab.parsing.commands.get_verbs_s import get_verbs_s
 
 logger = logging.getLogger(__name__)
 
+
 class InfinitAttrib:
     """ Infinitive transformation configuration
 
     The `Infinitive transformation configuration` is a structure designed to automatically generate and store
     a set of attributes used when converting verbs to their base forms.
+
+    Args:
+        dir_unique_id (str): Unique base directory.
+        is_init (bool, optional): Whether to initialize the `Infinitive transformation configuration`.
     """
 
     __v3: dict = None
@@ -29,6 +34,7 @@ class InfinitAttrib:
         """ Initialize the `Infinitive transformation configuration`.
         Args:
             dir_unique_id (str): Unique base directory.
+            is_init (bool, optional): Whether to initialize the `Infinitive transformation configuration`.
         """
         self.__dir_unique_id = dir_unique_id
         if is_init:
@@ -196,28 +202,28 @@ class InfinitAttrib:
     def __str__(self):
         """ Return the string representation of the object. """
         cur_set = (
-        f"\n  {__class__}\n"
-        f"  # INFINITIVIZATION\n"
-        f"  irregular_verbs_path = {self.irregular_verbs_path}\n"
-        f"  only_ending_ed_path = {self.only_ending_ed_path}\n"
-        f"  verbs_ending_e_path = {self.verbs_ending_e_path}\n"
-        f"  verbs_ending_non_ed_path = {self.verbs_ending_non_ed_path}\n"
-        f"  reviewed_pairs_path = {self.reviewed_pairs_path}\n"
-        f"  parsed_pairs_path = {self.parsed_pairs_path}\n"
-        f"  unreviewed_pairs_path = {self.unreviewed_pairs_path}\n")
+            f"\n  {__class__}\n"
+            f"  # INFINITIVIZATION\n"
+            f"  irregular_verbs_path = {self.irregular_verbs_path}\n"
+            f"  only_ending_ed_path = {self.only_ending_ed_path}\n"
+            f"  verbs_ending_e_path = {self.verbs_ending_e_path}\n"
+            f"  verbs_ending_non_ed_path = {self.verbs_ending_non_ed_path}\n"
+            f"  reviewed_pairs_path = {self.reviewed_pairs_path}\n"
+            f"  parsed_pairs_path = {self.parsed_pairs_path}\n"
+            f"  unreviewed_pairs_path = {self.unreviewed_pairs_path}\n")
         return cur_set
-    
+
     def str_path(self) -> str:
         """ Return the content of all used directories as a string. """
         cur_set = (
-        f"# INFINITIVIZATION\n"
-        f"{str(self.irregular_verbs_path.resolve())}\n"
-        f"{str(self.only_ending_ed_path.resolve())}\n"
-        f"{str(self.verbs_ending_e_path.resolve())}\n"
-        f"{str(self.verbs_ending_non_ed_path.resolve())}\n"
-        f"{str(self.reviewed_pairs_path.resolve())}\n"
-        f"{str(self.parsed_pairs_path.resolve())}\n"
-        f"{str(self.unreviewed_pairs_path.resolve())}\n"
+            f"# INFINITIVIZATION\n"
+            f"{str(self.irregular_verbs_path.resolve())}\n"
+            f"{str(self.only_ending_ed_path.resolve())}\n"
+            f"{str(self.verbs_ending_e_path.resolve())}\n"
+            f"{str(self.verbs_ending_non_ed_path.resolve())}\n"
+            f"{str(self.reviewed_pairs_path.resolve())}\n"
+            f"{str(self.parsed_pairs_path.resolve())}\n"
+            f"{str(self.unreviewed_pairs_path.resolve())}\n"
         )
         return cur_set
 

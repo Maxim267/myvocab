@@ -5,11 +5,16 @@ from src.myvocab.parsing.commands.save_file import save_file
 from src.myvocab.parsing.commands.save_file_merge import save_file_merge
 from src.myvocab.parsing.commands.get_v_tuple import get_v2
 
+
 class SingularAttrib:
     """ Singular transformation configuration.
 
     The `Singular transformation configuration` is a structure designed to automatically generate and store
     a set of attributes used for converting words from plural to singular form.
+
+    Args:
+        dir_unique_id (str): Unique base directory.
+        is_init (bool, optional): Whether to initialize the `Singular transformation configuration`.
     """
 
     __singular_ending_non_s: set = None
@@ -21,6 +26,7 @@ class SingularAttrib:
         """ Initialize the `Singular transformation configuration`.
         Args:
             dir_unique_id (str): Unique base directory.
+            is_init (bool, optional): Whether to initialize the `Singular transformation configuration`.
         """
         self.__dir_unique_id = dir_unique_id
         if is_init:
@@ -29,6 +35,7 @@ class SingularAttrib:
     # Singularization 
     __home = Path.home()
     __documents_path: Path = Path.joinpath(__home, "Documents")
+
     @property
     def singularization_path(self):
         """ Get /Documents/Singularization directory. """
@@ -124,26 +131,26 @@ class SingularAttrib:
     def __str__(self) -> str:
         """ Return the string representation of the object. """
         cur_str = (
-        f"\n  {__class__}\n"
-        f"  # SINGULARIZATION\n"
-        f"  only_ending_s_path = {self.only_ending_s_path}\n"
-        f"  singular_ending_non_s_path = {self.singular_ending_non_s_path}\n"
-        f"  irregular_plural_nouns_path = {self.irregular_plural_nouns_path}\n"
-        f"  reviewed_pairs_path = {self.reviewed_pairs_path}\n"
-        f"  parsed_pairs_path = {self.parsed_pairs_path}\n"
-        f"  unreviewed_pairs_path = {self.unreviewed_pairs_path}\n")
+            f"\n  {__class__}\n"
+            f"  # SINGULARIZATION\n"
+            f"  only_ending_s_path = {self.only_ending_s_path}\n"
+            f"  singular_ending_non_s_path = {self.singular_ending_non_s_path}\n"
+            f"  irregular_plural_nouns_path = {self.irregular_plural_nouns_path}\n"
+            f"  reviewed_pairs_path = {self.reviewed_pairs_path}\n"
+            f"  parsed_pairs_path = {self.parsed_pairs_path}\n"
+            f"  unreviewed_pairs_path = {self.unreviewed_pairs_path}\n")
         return cur_str
 
     def str_path(self) -> str:
         """ Return the content of all used directories as a string. """
         cur_str = (
-        f"# SINGULARIZATION\n"
-        f"{str(self.only_ending_s_path.resolve())}\n"
-        f"{str(self.singular_ending_non_s_path.resolve())}\n"
-        f"{str(self.irregular_plural_nouns_path.resolve())}\n"
-        f"{str(self.reviewed_pairs_path.resolve())}\n"
-        f"{str(self.parsed_pairs_path.resolve())}\n"
-        f"{str(self.unreviewed_pairs_path.resolve())}\n"
+            f"# SINGULARIZATION\n"
+            f"{str(self.only_ending_s_path.resolve())}\n"
+            f"{str(self.singular_ending_non_s_path.resolve())}\n"
+            f"{str(self.irregular_plural_nouns_path.resolve())}\n"
+            f"{str(self.reviewed_pairs_path.resolve())}\n"
+            f"{str(self.parsed_pairs_path.resolve())}\n"
+            f"{str(self.unreviewed_pairs_path.resolve())}\n"
         )
         return cur_str
 

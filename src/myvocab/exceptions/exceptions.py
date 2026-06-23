@@ -112,6 +112,16 @@ class IdentifierOutOfRangeError(VocabError):
     def __str__(self) -> str:
         return f"{self.message} {self.identifier} not in {self.range}"
 
+class IdentifierInvalidValueError(VocabError):
+    """ Raised when an identifier has invalid value. """
+    def __init__(self, identifier: int, message: str ="The identifier has invalid value:"):
+        self.identifier = identifier
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f"{self.message} {self.identifier}"
+
 class FileIsNotFoundError(VocabError):
     """ Raised when a file is not found. """
     def __init__(self, file, message="The file is not found:"):

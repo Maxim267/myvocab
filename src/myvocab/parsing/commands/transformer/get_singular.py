@@ -3,36 +3,52 @@ import re
 from src.myvocab.parsing.vocabulary import vocabulary as vcb
 from src.myvocab.constants import constants as cns
 from src.myvocab.exceptions import exceptions as exc
-from src.myvocab.parsing.commands.get_init_data import get_init_data
+from src.myvocab.parsing.commands.transformer.get_init_data import get_init_data
 
 logger = logging.getLogger(__name__)
 
-# Singularize a word
-def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
-    """ Convert a word to its singular form.
+
+def check_singular_data(data: dict) -> None:
+    """ Check the processed data for identifiers allocated to singular
 
     Args:
-        word (str): The input word may be modified
-        vocab (VocabConfig): 'Vocabulary configuration' object
-    Returns:
-        dict: Processed data
+        data (dict): The input data
     """
 
     cur_range = cns.RANGE_SINGULAR_ID
     # The range's max_id value must only be accessed outside this function
     cur_range_max_id = cns.RANGE_SINGULAR_MAX_ID
-    cur_word = word.lower().strip()
+
+    # In case of design range violation
+    if data['id'] not in cur_range:
+        raise exc.IdentifierOutOfRangeError(data['id'], cur_range)
+    if data['id'] == cur_range_max_id:
+        raise exc.IdentifierInvalidValueError(data['id'],
+                                              message="The max_id of the range must only be used outside of this function:")
+
+
+def get_singular_dict(vocab: vcb.VocabConfig, data: dict) -> dict:
+    """ Search for the input word in the `singular` dictionary.
+
+    Args:
+        vocab (VocabConfig): 'Vocabulary configuration' object
+        data (dict): The input data
+    Returns:
+        dict: Processed data
+    """
+
+    cur_word = data["word"].lower().strip()
     cur_data = get_init_data(cur_word)
 
     # It requires an irregular plural noun (e.g., feet)
     if val := vocab.singular.irregular_plural_nouns.get(cur_word):
         cur_data = {
             "id": 10,
-            "word": val, # (e.g., foot)
+            "word": val,  # (e.g., foot)
             "pair": "" if cur_word == val else f"{cur_word} - {val}"
         }
     # It requires a word ending in -s
-    elif word_s := re.findall(r'(.+)s\b', cur_word):
+    elif re.findall(r'(.+)s\b', cur_word):
 
         # Searching for a word  with invariable '-s' endings in the set
         if cur_word in vocab.singular.only_ending_s:
@@ -41,8 +57,41 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
                 "word": cur_word,
                 "pair": ""
             }
+
+    # If data has changed
+    if cur_data['id'] != cns.UNCHANGED_DATA_ID:
+        # Log the word transformation pair
+        logger.debug(f"(id={cur_data['id']}) {cur_word} -> {cur_data['word']}")
+
+        # In case of design range violation
+        check_singular_data(cur_data)
+
+        # The word changed into a `singular`
+        return cur_data
+
+    # The data has not changed
+    return data
+
+
+# Singularize a word
+def get_singular_form(vocab: vcb.VocabConfig, data: dict) -> dict:
+    """ Convert a word to its singular form.
+
+    Args:
+        vocab (VocabConfig): 'Vocabulary configuration' object
+        data (dict): The input data
+    Returns:
+        dict: Processed data
+    """
+
+    cur_word = data["word"].lower().strip()
+    cur_data = get_init_data(cur_word)
+
+    # It requires a word ending in -s
+    if word_s := re.findall(r'(.+)s\b', cur_word):
+
         # Skip further processing for words whose base form does not end in '-s' if they are present in the set.
-        elif word_s[0] in vocab.singular.singular_ending_non_s:
+        if word_s[0] in vocab.singular.singular_ending_non_s:
             val = word_s[0]
             cur_data = {
                 "id": 30,
@@ -112,7 +161,7 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
             elif word_o_es_s:
                 val = word_o_es_s[0][0]
                 cur_data = {
-                    "id":90,
+                    "id": 90,
                     "word": val,
                     "pair": cur_word + " - " + val
                 }
@@ -195,19 +244,12 @@ def get_singular(word: str, vocab: vcb.VocabConfig) -> dict:
     if cur_data['id'] != cns.UNCHANGED_DATA_ID:
         # Log the word transformation pair
         logger.debug(f"(id={cur_data['id']}) {cur_word} -> {cur_data['word']}")
-        # In case of design range violation
-        if cur_data['id'] not in cur_range:
-            raise exc.IdentifierOutOfRangeError(cur_data['id'], cur_range)
-        elif cur_data['id'] == cur_range_max_id:
-            raise exc.IdentifierInvalidValueError(cur_data['id'], message = "The max_id of the range must only be used outside of this function:")
 
-    return cur_data
-
-def log_singular(payload: dict, changed: str) -> None:
-    # If data has changed
-    if payload['id'] != cns.UNCHANGED_DATA_ID:
-        # Log the word transformation pair
-        logger.debug(f"(id={payload['id']}) {changed}")
         # In case of design range violation
-        if payload['id'] not in cns.RANGE_SINGULAR_ID:
-            raise exc.IdentifierOutOfRangeError(payload['id'], cns.RANGE_SINGULAR_ID)
+        check_singular_data(cur_data)
+
+        # The word changed into a singular
+        return cur_data
+
+    # The data has not changed
+    return data
