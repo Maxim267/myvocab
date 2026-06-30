@@ -176,6 +176,15 @@ class VocabConfig:
         self.__casing = csn.CasingAttrib(self.dir_unique_id, is_init)
 
     @property
+    def is_transformer(self) -> bool:
+        """ Has any transformer been set?. """
+        if (self.__singular is not None
+                or self.__infinit is not None
+                or self.__casing is not None):
+            return True
+        return False
+
+    @property
     def verbs_ending_s(self) -> set:
         """ Get verbs ending in -s. """
         return self.__verbs_ending_s

@@ -211,64 +211,73 @@ def render_vocab(base_path: Path) -> None:
                         if re.match(r'\b[0-9]+\b', fl_word):
                             continue
 
-                        # Convert the word to lowercase
-                        if fl_word in first_words:
-                            fl_word = fl_word.lower()
-
-                        if trans_val := transform_dict.get(fl_word):
-                            val = trans_val
+                        if not vocab.is_transformer:
+                            val = fl_word
                         else:
-                            # if the word contains a hyphen
-                            is_multi = False
-                            multi_words = re.split(r'-', fl_word)
-                            if len(multi_words) > 1:
-                                for m_word in multi_words:
-                                    if m_word != "":
-                                        # Enable hyphenated compound processing
-                                        is_multi = True
-                                        break
-                            # Hyphenated compound
-                            if is_multi:
-                                trns_data_id = cns.UNCHANGED_DATA_ID
-                                multi_phrase = ""
+                            # Convert the word to lowercase
+                            if fl_word in first_words:
+                                fl_word = fl_word.lower()
 
-                                for multi_word in multi_words:
-                                    if multi_word != "":
-
-                                        # Convert the word to lowercase
-                                        if multi_word in first_words:
-                                            multi_word = multi_word.lower()
-
-                                        if multi_phrase != "":
-                                            multi_phrase += "-"
-
-                                        if trans_val := transform_dict.get(multi_word):
-                                            multi_val = trans_val
-                                        else:
-                                            trans_data = get_transformer(vocab, multi_word, parsed_pairs)
-                                            if trans_data["id"] != cns.UNCHANGED_DATA_ID:
-                                                trns_data_id = trans_data["id"]
-                                            multi_val = trans_data["word"]
-                                            transform_dict[multi_word] = multi_val
-
-                                        multi_phrase = multi_phrase + multi_val
-
-                                val = multi_phrase
-                                if val != "" and val != fl_word:
-                                    if trns_data_id != cns.UNCHANGED_DATA_ID:
-                                        trans_data["id"] = trns_data_id
-                                    else:
-                                        trans_data["id"] = cns.RANGE_CASING_MAX_ID
-                                    trans_data[
-                                        "pair"] = "" if fl_word == multi_phrase else f"{fl_word} - {multi_phrase}"
-                                    add_pair(parsed_pairs, trans_data)
-                                    # Log a specific transform
-                                    log_transformer(get_init_data(multi_phrase, trns_data_id),
-                                                    f"{fl_word} -> {multi_phrase}")
+                            if trans_val := transform_dict.get(fl_word):
+                                val = trans_val
                             else:
-                                trans_data = get_transformer(vocab, fl_word, parsed_pairs)
-                                val = trans_data["word"]
-                                transform_dict[fl_word] = val
+                                # if the word contains a hyphen
+                                is_multi = False
+                                multi_words = re.split(r'-', fl_word)
+                                if len(multi_words) > 1:
+                                    for m_word in multi_words:
+                                        if m_word != "":
+                                            # Enable hyphenated compound processing
+                                            is_multi = True
+                                            break
+                                # Hyphenated compound
+                                if is_multi:
+                                    trns_data_id = cns.UNCHANGED_DATA_ID
+                                    multi_phrase = ""
+
+                                    for multi_word in multi_words:
+                                        if multi_word != "":
+
+                                            # Convert the word to lowercase
+                                            if multi_word in first_words:
+                                                multi_word = multi_word.lower()
+
+                                            if multi_phrase != "":
+                                                multi_phrase += "-"
+
+                                            if trans_val := transform_dict.get(multi_word):
+                                                multi_val = trans_val
+                                            else:
+                                                trans_data = get_transformer(vocab, multi_word, parsed_pairs)
+                                                if trans_data["id"] != cns.UNCHANGED_DATA_ID:
+                                                    trns_data_id = trans_data["id"]
+                                                multi_val = trans_data["word"]
+                                                transform_dict[multi_word] = multi_val
+
+                                            multi_phrase = multi_phrase + multi_val
+
+                                    val = multi_phrase
+                                    if val != "" and val != fl_word:
+                                         # Select the ID of a specific transformation
+                                        if trns_data_id != cns.UNCHANGED_DATA_ID:
+                                            trans_data["id"] = trns_data_id
+                                        elif vocab.use_lemma_casing:
+                                            trans_data["id"] = cns.RANGE_CASING_MAX_ID
+                                        elif vocab.use_lemma_infinit:
+                                            trans_data["id"] = cns.RANGE_INFINIT_MAX_ID
+                                        else:
+                                            trans_data["id"] = cns.RANGE_SINGULAR_MAX_ID
+                                        # Save the resulting hyphenated compound for the specific transformation
+                                        trans_data["pair"] = "" if fl_word == multi_phrase else f"{fl_word} - {multi_phrase}"
+                                        add_pair(parsed_pairs, trans_data)
+                                        # Log a specific transformation
+                                        log_transformer(get_init_data(multi_phrase, trns_data_id),
+                                                        f"{fl_word} -> {multi_phrase}")
+
+                                else:
+                                    trans_data = get_transformer(vocab, fl_word, parsed_pairs)
+                                    val = trans_data["word"]
+                                    transform_dict[fl_word] = val
 
                         # The word has been processed
                         if vocab.use_order_text:
